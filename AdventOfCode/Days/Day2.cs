@@ -5,16 +5,28 @@ namespace AdventOfCode.Days
 {
     internal class Day2 : Day
     {
-        public Day2() : base(2)
+        public Day2()
+            : base(2)
         {
         }
 
         public override object ProcessFirst()
         {
             var count = 0;
-            foreach (var line in Lines)
+            foreach (var line in this.Lines)
             {
                 count += ComputeLine1(line);
+            }
+
+            return count;
+        }
+
+        public override object ProcessSecond()
+        {
+            var count = 0;
+            foreach (var line in this.Lines)
+            {
+                count += ComputeLine2(line);
             }
 
             return count;
@@ -24,7 +36,7 @@ namespace AdventOfCode.Days
         {
             var dim = line.Split('x').Select(i => int.Parse(i)).ToList();
 
-            return 2 * dim[0] * dim[1] + 2 * dim[1] * dim[2] + 2 * dim[2] * dim[0] + Math.Min(dim[0] * dim[1], Math.Min(dim[1] * dim[2], dim[2] * dim[0]));
+            return (2 * dim[0] * dim[1]) + (2 * dim[1] * dim[2]) + (2 * dim[2] * dim[0]) + Math.Min(dim[0] * dim[1], Math.Min(dim[1] * dim[2], dim[2] * dim[0]));
         }
 
         private static int ComputeLine2(string line)
@@ -34,18 +46,7 @@ namespace AdventOfCode.Days
 
             dim.Remove(dim.Max());
 
-            count += 2 * dim[0] + 2 * dim[1];
-
-            return count;
-        }
-
-        public override object ProcessSecond()
-        {
-            var count = 0;
-            foreach (var line in Lines)
-            {
-                count += ComputeLine2(line);
-            }
+            count += (2 * dim[0]) + (2 * dim[1]);
 
             return count;
         }

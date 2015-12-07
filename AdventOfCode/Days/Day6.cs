@@ -6,11 +6,36 @@ namespace AdventOfCode.Days
 {
     internal class Day6 : Day
     {
-        public Day6() : base(6)
+        public Day6()
+            : base(6)
         {
         }
 
-        public static void ChangeLights(bool[,] lights, Tuple<int, int> start, Tuple<int, int> end, Func<bool, bool> action)
+        public override object ProcessFirst()
+        {
+            var lights = new bool[1000, 1000];
+
+            foreach (var line in this.Lines)
+            {
+                ProcessCommand(line, lights);
+            }
+
+            return lights.Cast<bool>().ToList().Count(c => c);
+        }
+
+        public override object ProcessSecond()
+        {
+            var lights = new int[1000, 1000];
+
+            foreach (var line in this.Lines)
+            {
+                ProcessCommand(line, lights);
+            }
+
+            return lights.Cast<int>().ToList().Sum();
+        }
+
+        private static void ChangeLights(bool[,] lights, Tuple<int, int> start, Tuple<int, int> end, Func<bool, bool> action)
         {
             for (int i = start.Item1; i <= end.Item1; i++)
             {
@@ -21,7 +46,18 @@ namespace AdventOfCode.Days
             }
         }
 
-        public static Tuple<int, int> GetRange(string range)
+        private static void ChangeLights(int[,] lights, Tuple<int, int> start, Tuple<int, int> end, Func<int, int> action)
+        {
+            for (int i = start.Item1; i <= end.Item1; i++)
+            {
+                for (int j = start.Item2; j <= end.Item2; j++)
+                {
+                    lights[i, j] = action(lights[i, j]);
+                }
+            }
+        }
+
+        private static Tuple<int, int> GetRange(string range)
         {
             var i = range.Split(',');
 
@@ -30,7 +66,7 @@ namespace AdventOfCode.Days
             return tuple;
         }
 
-        public static void ProcessCommand<T>(string s, T lights)
+        private static void ProcessCommand<T>(string s, T lights)
         {
             var regex = new Regex(@"^(turn on|toggle|turn off) (\d+,\d+) through (\d+,\d+)$");
             var match = regex.Match(s);
@@ -59,6 +95,7 @@ namespace AdventOfCode.Days
                         {
                             ChangeLights(lights as int[,], GetRange(match.Groups[2].Value), GetRange(match.Groups[3].Value), (c) => c + 2);
                         }
+
                         break;
 
                     case "turn off":
@@ -70,44 +107,10 @@ namespace AdventOfCode.Days
                         {
                             ChangeLights(lights as int[,], GetRange(match.Groups[2].Value), GetRange(match.Groups[3].Value), (c) => c > 0 ? c - 1 : c);
                         }
+
                         break;
                 }
             }
-        }
-
-        private static void ChangeLights(int[,] lights, Tuple<int, int> start, Tuple<int, int> end, Func<int, int> action)
-        {
-            for (int i = start.Item1; i <= end.Item1; i++)
-            {
-                for (int j = start.Item2; j <= end.Item2; j++)
-                {
-                    lights[i, j] = action(lights[i, j]);
-                }
-            }
-        }
-
-        public override object ProcessFirst()
-        {
-            var lights = new bool[1000, 1000];
-
-            foreach (var line in Lines)
-            {
-                ProcessCommand(line, lights);
-            }
-
-            return lights.Cast<bool>().ToList().Count(c => c);
-        }
-
-        public override object ProcessSecond()
-        {
-            var lights = new int[1000, 1000];
-
-            foreach (var line in Lines)
-            {
-                ProcessCommand(line, lights);
-            }
-
-            return lights.Cast<int>().ToList().Sum();
         }
     }
 }

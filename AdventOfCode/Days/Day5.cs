@@ -1,25 +1,25 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 
 namespace AdventOfCode.Days
 {
     internal class Day5 : Day
     {
-        public Day5() : base(5)
+        public Day5()
+            : base(5)
         {
         }
 
         public override object ProcessFirst()
         {
-            return Lines.Count(IsNice);
+            return this.Lines.Count(IsNice);
         }
 
         public override object ProcessSecond()
         {
-            return Lines.Count(IsNicer);
+            return this.Lines.Count(IsNicer);
         }
 
-        public static bool IsNice(string s)
+        private static bool IsNice(string s)
         {
             const string vowels = "aeiou";
             var excluded = new string[] { "ab", "cd", "pq", "xy" };
@@ -34,10 +34,10 @@ namespace AdventOfCode.Days
                 }
             }
 
-            return (s.Count(vowels.Contains) >= 3) && (splittedString.Any(c => c[0] == c[1]));
+            return (s.Count(vowels.Contains) >= 3) && splittedString.Any(c => c[0] == c[1]);
         }
 
-        public static bool IsNicer(string s)
+        private static bool IsNicer(string s)
         {
             var splittedString = s.Select((c, i) => i == s.Length - 1 ? null : $"{s[i]}{s[i + 1]}").Where(c => c != null);
             var pairFound = false;

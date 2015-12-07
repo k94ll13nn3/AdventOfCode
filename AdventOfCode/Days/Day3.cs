@@ -6,19 +6,20 @@ namespace AdventOfCode.Days
 {
     internal class Day3 : Day
     {
-        public Day3() : base(3)
+        public Day3()
+            : base(3)
         {
         }
 
         public override object ProcessFirst()
         {
-            return ComputeList(Content).Count();
+            return ComputeList(this.Content).Count();
         }
 
         public override object ProcessSecond()
         {
-            var a = new string(Content.Where((c, i) => i % 2 == 0).ToArray());
-            var b = new string(Content.Where((c, i) => i % 2 != 0).ToArray());
+            var a = new string(this.Content.Where((c, i) => i % 2 == 0).ToArray());
+            var b = new string(this.Content.Where((c, i) => i % 2 != 0).ToArray());
 
             var houses = new List<Tuple<int, int>>(ComputeList(a));
             houses.AddRange(ComputeList(b));

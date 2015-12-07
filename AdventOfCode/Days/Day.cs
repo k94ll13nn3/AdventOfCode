@@ -7,13 +7,13 @@ namespace AdventOfCode.Days
     {
         protected Day(int i)
         {
-            Content = File.ReadAllText($"Inputs/Input{i}.txt");
-            Lines = File.ReadAllLines($"Inputs/Input{i}.txt");
+            this.Content = File.ReadAllText($"Inputs/Input{i}.txt");
+            this.Lines = File.ReadAllLines($"Inputs/Input{i}.txt");
         }
 
         public string Content { get; }
 
-        public IEnumerable<string> Lines { get; }
+        public IEnumerable<string> Lines { get; set; }
 
         public abstract object ProcessFirst();
 

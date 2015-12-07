@@ -4,13 +4,14 @@ namespace AdventOfCode.Days
 {
     internal class Day1 : Day
     {
-        public Day1() : base(1)
+        public Day1()
+            : base(1)
         {
         }
 
         public override object ProcessFirst()
         {
-            var count = Content.Count(c => c == '(') - Content.Count(c => c == ')');
+            var count = this.Content.Count(c => c == '(') - this.Content.Count(c => c == ')');
 
             return count;
         }
@@ -19,9 +20,9 @@ namespace AdventOfCode.Days
         {
             var count = 0;
 
-            for (int i = 0; i < Content.Length; i++)
+            for (int i = 0; i < this.Content.Length; i++)
             {
-                count += Content[i] == '(' ? 1 : -1;
+                count += this.Content[i] == '(' ? 1 : -1;
                 if (count == -1)
                 {
                     return i + 1;
