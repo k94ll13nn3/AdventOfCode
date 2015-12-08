@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -6,11 +8,6 @@ namespace AdventOfCode.Days
 {
     internal class Day4 : Day
     {
-        public Day4()
-            : base(4)
-        {
-        }
-
         public static string ComputeMD5(string password)
         {
             var encodedPassword = new UTF8Encoding().GetBytes(password);

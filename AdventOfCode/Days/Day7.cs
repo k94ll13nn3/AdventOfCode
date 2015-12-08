@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿// stylecop.header
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,11 +8,6 @@ namespace AdventOfCode.Days
 {
     internal class Day7 : Day
     {
-        public Day7()
-            : base(7)
-        {
-        }
-
         public override object ProcessFirst()
         {
             return Process(new List<string>(this.Lines));

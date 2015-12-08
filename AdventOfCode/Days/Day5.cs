@@ -1,14 +1,11 @@
-﻿using System.Linq;
+﻿// stylecop.header
+
+using System.Linq;
 
 namespace AdventOfCode.Days
 {
     internal class Day5 : Day
     {
-        public Day5()
-            : base(5)
-        {
-        }
-
         public override object ProcessFirst()
         {
             return this.Lines.Count(IsNice);

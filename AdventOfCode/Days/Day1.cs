@@ -1,14 +1,11 @@
-﻿using System.Linq;
+﻿// stylecop.header
+
+using System.Linq;
 
 namespace AdventOfCode.Days
 {
     internal class Day1 : Day
     {
-        public Day1()
-            : base(1)
-        {
-        }
-
         public override object ProcessFirst()
         {
             var count = this.Content.Count(c => c == '(') - this.Content.Count(c => c == ')');

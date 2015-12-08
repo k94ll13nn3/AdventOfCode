@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,11 +8,6 @@ namespace AdventOfCode.Days
 {
     internal class Day3 : Day
     {
-        public Day3()
-            : base(3)
-        {
-        }
-
         public override object ProcessFirst()
         {
             return ComputeList(this.Content).Count();

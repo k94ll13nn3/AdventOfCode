@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,11 +8,6 @@ namespace AdventOfCode.Days
 {
     internal class Day6 : Day
     {
-        public Day6()
-            : base(6)
-        {
-        }
-
         public override object ProcessFirst()
         {
             var lights = new bool[1000, 1000];
