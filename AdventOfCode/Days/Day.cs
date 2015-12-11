@@ -13,6 +13,11 @@ namespace AdventOfCode.Days
             this.Lines = File.ReadAllLines($"Inputs/Input{i}.txt");
         }
 
+        protected Day(string content)
+        {
+            this.Content = content;
+        }
+
         public string Content { get; }
 
         public IEnumerable<string> Lines { get; }

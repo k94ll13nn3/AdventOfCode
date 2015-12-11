@@ -9,7 +9,7 @@ namespace AdventOfCode
     {
         private static void Main()
         {
-            var day = new Day10();
+            var day = new Day11();
 
             Console.WriteLine($"First problem: {day.ProcessFirst()}");
             Console.WriteLine($"Second problem: {day.ProcessSecond()}");
