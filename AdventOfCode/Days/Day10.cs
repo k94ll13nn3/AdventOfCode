@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿// stylecop.header
+
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Days
