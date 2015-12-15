@@ -1,5 +1,4 @@
 ﻿// stylecop.header
-
 using System;
 using AdventOfCode.Days;
 
@@ -9,7 +8,7 @@ namespace AdventOfCode
     {
         private static void Main()
         {
-            var day = new Day14();
+            var day = new Day15();
 
             Console.WriteLine($"First problem: {day.ProcessFirst()}");
             Console.WriteLine($"Second problem: {day.ProcessSecond()}");
