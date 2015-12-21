@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +8,7 @@ namespace AdventOfCode.Days
 {
     internal class Day19 : Day
     {
-        private static int totalStep = 0;
+        private static int totalStep;
         private readonly IEnumerable<Tuple<string, string>> transformations;
 
         public Day19()

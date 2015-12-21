@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Collections.Generic;
 
 namespace AdventOfCode.Days

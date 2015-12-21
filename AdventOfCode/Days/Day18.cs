@@ -1,4 +1,6 @@
-﻿using System;
+﻿// stylecop.header
+
+using System;
 using System.Linq;
 
 namespace AdventOfCode.Days
@@ -35,7 +37,7 @@ namespace AdventOfCode.Days
 
         private static bool ComputeNewState(int i, int j, bool[][] grid)
         {
-            int countOnLights = 0;
+            var countOnLights = 0;
 
             for (int k = Math.Max(0, i - 1); k <= Math.Min(GridSize - 1, i + 1); k++)
             {
