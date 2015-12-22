@@ -1,6 +1,7 @@
 ﻿// stylecop.header
 using System;
 using AdventOfCode.Days;
+using System.Diagnostics;
 
 namespace AdventOfCode
 {
@@ -8,10 +9,19 @@ namespace AdventOfCode
     {
         private static void Main()
         {
-            var day = new Day21();
+            var day = new Day22();
+            var timer = new Stopwatch();
 
-            Console.WriteLine($"First problem: {day.ProcessFirst()}");
-            Console.WriteLine($"Second problem: {day.ProcessSecond()}");
+            timer.Start();
+            var firstPart = day.ProcessFirst();
+            timer.Stop();
+            Console.WriteLine($"First problem: {firstPart} in {timer.ElapsedMilliseconds / 1000.0}s");
+
+            timer.Start();
+            var secondPart = day.ProcessSecond();
+            timer.Stop();
+            Console.WriteLine($"Second problem: {secondPart} in {timer.ElapsedMilliseconds / 1000.0}s");
+
             Console.ReadLine();
         }
     }

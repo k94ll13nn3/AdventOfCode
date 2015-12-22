@@ -125,18 +125,8 @@ namespace AdventOfCode.Days
 
         private static bool IsWinner(Tuple<int, int, int, int> player, Tuple<int, int, int, int> boss)
         {
-            double playerTurn = player.Item3 - boss.Item4;
-            double bossTurn = boss.Item3 - player.Item4;
-
-            if (bossTurn <= 0.0)
-            {
-                return true;
-            }
-
-            if (playerTurn <= 0.0)
-            {
-                return false;
-            }
+            double playerTurn = Math.Max(player.Item3 - boss.Item4, 1);
+            double bossTurn = Math.Max(boss.Item3 - player.Item4, 1);
 
             var playerNumberOfTurns = Math.Ceiling(boss.Item1 / playerTurn);
             var bossNumberOfTurns = Math.Ceiling(player.Item1 / bossTurn);
