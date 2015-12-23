@@ -1,7 +1,7 @@
 ﻿// stylecop.header
 using System;
-using AdventOfCode.Days;
 using System.Diagnostics;
+using AdventOfCode.Days;
 
 namespace AdventOfCode
 {
@@ -9,7 +9,7 @@ namespace AdventOfCode
     {
         private static void Main()
         {
-            var day = new Day22();
+            var day = new Day23();
             var timer = new Stopwatch();
 
             timer.Start();
