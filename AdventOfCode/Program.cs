@@ -9,7 +9,7 @@ namespace AdventOfCode
     {
         private static void Main()
         {
-            var day = new Day23();
+            var day = new Day24();
             var timer = new Stopwatch();
 
             timer.Start();
