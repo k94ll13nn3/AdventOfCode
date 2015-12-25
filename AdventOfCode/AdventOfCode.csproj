@@ -65,6 +65,7 @@
     <Compile Include="Days\Day22.cs" />
     <Compile Include="Days\Day23.cs" />
     <Compile Include="Days\Day24.cs" />
+    <Compile Include="Days\Day25.cs" />
     <Compile Include="Days\Day3.cs" />
     <Compile Include="Days\Day4.cs" />
     <Compile Include="Days\Day5.cs" />
