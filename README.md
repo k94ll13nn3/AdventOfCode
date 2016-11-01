@@ -1,3 +1,3 @@
 # AdventOfCode
 
-Repository for my (ugly) http://adventofcode.com/ solutions.
+Repository for my http://adventofcode.com/ solutions.
