@@ -46,7 +46,6 @@
     <Compile Include="Core\Helper.fs" />
     <Compile Include="Days\Day1.fs" />
     <Compile Include="AdventOfCode.fs" />
-    <None Include="App.config" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">14</MinimumVisualStudioVersion>
