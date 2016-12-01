@@ -42,6 +42,9 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Reader.fs" />
+    <Compile Include="Core\Helper.fs" />
+    <Compile Include="Days\Day1.fs" />
     <Compile Include="AdventOfCode.fs" />
     <None Include="App.config" />
   </ItemGroup>
