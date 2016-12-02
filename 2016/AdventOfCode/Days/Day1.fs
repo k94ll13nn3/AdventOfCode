@@ -3,8 +3,8 @@ module Day1
 open Reader
 open Helper
 open System
+open Types
 
-type Point = { X: int; Y: int }
 let distance p = 
     (abs p.X) + (abs p.Y)
 
