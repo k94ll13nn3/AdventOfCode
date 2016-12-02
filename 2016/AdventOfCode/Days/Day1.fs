@@ -10,11 +10,9 @@ let distance p =
 
 type Direction = N | S | W | E
 type Turn = R | L
-let toTurn s =
-    match s with 
-    | 'R' -> R
-    | 'L' -> L
-    | _ -> failwith (sprintf "%c is not a valid Turn value" s)
+
+let toTurn c =
+    fromString<Turn> (string c) 
 
 let getDirection t d =
     match t, d with 

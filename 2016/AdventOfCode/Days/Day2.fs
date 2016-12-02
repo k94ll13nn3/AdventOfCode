@@ -24,12 +24,7 @@ let codeFromDiamond p =
     diamond.[2 - p.Y].[p.X + 2] // Y axis is inverted
 
 let toDirection c =
-    match c with 
-    | 'U' -> U
-    | 'L' -> L
-    | 'R' -> R
-    | 'D' -> D
-    | _ -> failwith "toDirection - err."
+    fromString<Direction> (string c)
 
 let moveSquare p d =
     match d with
