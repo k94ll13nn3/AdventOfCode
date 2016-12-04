@@ -48,6 +48,7 @@
     <Compile Include="Days\Day1.fs" />
     <Compile Include="Days\Day2.fs" />
     <Compile Include="Days\Day3.fs" />
+    <Compile Include="Days\Day4.fs" />
     <Compile Include="AdventOfCode.fs" />
   </ItemGroup>
   <PropertyGroup>
