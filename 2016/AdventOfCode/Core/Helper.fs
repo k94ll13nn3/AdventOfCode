@@ -19,7 +19,15 @@ let (|Regex|_|) pattern input =
     else None
 
 let removeChars (stripChars:string) (text:string) =
-    text.Split(stripChars.ToCharArray(), StringSplitOptions.RemoveEmptyEntries) 
+    text.Split(stripChars.ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
     |> String.Concat
 
 let flip f a b = f b a
+
+let rotate (a:'T[][]) =
+    [| for x in {0 .. a.[0].Length-1} -> [| for y in {0 .. a.Length-1} -> a.[y].[x] |] |]
+
+let rotateString (a:string[]) =
+    [| for x in {0 .. a.[0].Length-1} -> [| for y in {0 .. a.Length-1} -> a.[y].[x] |] |]
+
+let seqToString (s : seq<char>) = s |> Seq.toArray |> String 
