@@ -31,3 +31,6 @@ let rotateString (a:string[]) =
     [| for x in {0 .. a.[0].Length-1} -> [| for y in {0 .. a.Length-1} -> a.[y].[x] |] |]
 
 let seqToString (s : seq<char>) = s |> Seq.toArray |> String 
+
+type System.String with
+    member x.LongLength = uint64 x.Length
