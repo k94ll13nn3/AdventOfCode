@@ -34,3 +34,5 @@ let seqToString (s : seq<char>) = s |> Seq.toArray |> String
 
 type System.String with
     member x.LongLength = uint64 x.Length
+
+let isEven i = i % 2 = 0
