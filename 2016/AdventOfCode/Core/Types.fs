@@ -1,6 +1,7 @@
 module Types
 
 type Point = {X : int; Y : int}
+let origin = {X = 0; Y = 0}
 
 // http://stackoverflow.com/a/2050402
 type Container<'a> = Queue of 'a list * 'a list | Stack of 'a list
@@ -29,3 +30,6 @@ let take q =
     | Queue(fs, []) -> 
         let bs = List.rev fs
         bs.Head, Queue([], bs.Tail)
+
+let (-->) e q = add q e
+let (++>) e q = addList q e
