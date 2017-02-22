@@ -34,6 +34,7 @@
     <WarningLevel>3</WarningLevel>
     <PlatformTarget>$(Platform)</PlatformTarget>
     <DocumentationFile>bin\$(Configuration)\$(AssemblyName).XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -67,6 +68,7 @@
     <Compile Include="Days\Day20.fs" />
     <Compile Include="Days\Day21.fs" />
     <Compile Include="Days\Day22.fs" />
+    <Compile Include="Days\Day23.fs" />
     <Compile Include="AdventOfCode.fs" />
   </ItemGroup>
   <PropertyGroup>
