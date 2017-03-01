@@ -84,10 +84,3 @@ let computeSecond =
     |> List.map (fun (ch::ct) -> (ch::ct)@[ch])
     |> List.map (fun c -> computeDistanceOfPermutation distanceMap c)
     |> List.min
-
-// toutes les permuts
-// pour chaque permut -> trouver dist
-// BFS entre deux points
-
-// calculer tous les couples (start, end)
-// permuter les couples 
