@@ -36,3 +36,13 @@ type System.String with
     member x.LongLength = uint64 x.Length
 
 let isEven i = i % 2 = 0
+
+module List = 
+    // http://fssnip.net/4u
+    let rec insertions x = function
+        | []             -> [[x]]
+        | (y :: ys) as l -> (x::l)::(List.map (fun x -> y::x) (insertions x ys))
+
+    let rec permutations = function
+        | []      -> [ [] ]
+        | x :: xs -> List.concat (List.map (insertions x) (permutations xs))
