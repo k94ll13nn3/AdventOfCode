@@ -9,6 +9,7 @@
     <Compile Include="Core\Types.fs" />
     <Compile Include="Core\Helper.fs" />
     <Compile Include="Days\Day1.fs" />
+    <Compile Include="Days\Day2.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
