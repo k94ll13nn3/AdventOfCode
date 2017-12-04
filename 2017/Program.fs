@@ -1,6 +1,6 @@
 ﻿module AdventOfCode
 
-open Day3
+open Day4
 
 [<EntryPoint>]
 let main argv =
