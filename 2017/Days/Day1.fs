@@ -8,9 +8,9 @@ let compute (ls:char[]) (offset:int) =
     |> Array.sum
 
 let computeFirst =
-    let ls = readInput "input1.txt"
+    let ls = readInput "Input1.txt"
     compute (ls |> Array.ofSeq) 1
 
 let computeSecond =
-    let ls = readInput "input1.txt"
+    let ls = readInput "Input1.txt"
     compute (ls |> Array.ofSeq) (ls.Length/2)
