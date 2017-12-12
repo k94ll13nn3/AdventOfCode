@@ -24,9 +24,3 @@ let computeSecond =
     (readInput "Input11.txt").Split ','
     |> Array.fold (fun (position, m) e -> let p = getNextPosition position e in (p, (max m (distance p)))) ((0.0, 0.0), 0)
     |> snd
-
-
-let rotate (l:int) (arr: 'a[]) = let l1 = arr.Length in arr |> Array.mapi (fun i _ -> arr.[(l1+i+l)%l1])
-let reverse (l:int) (arr: 'a[]) = Array.append (arr.[0..l-1] |> Array.rev) arr.[l..]
-let rotrev e f = rotate e >> reverse f >> rotate -e
-let t = [|1;2;3;4;5;6|] |> rotrev 1 5
