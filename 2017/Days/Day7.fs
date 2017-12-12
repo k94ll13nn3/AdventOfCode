@@ -33,7 +33,9 @@ let computeWeight l =
                 |> List.groupBy (fun e -> e.Weight) 
                 |> List.sortBy (fun (_, value) -> value.Length)
             if groupedChildren.Length > 1 then
-                let ((_, (f::_))::(s, _)::_) = groupedChildren in f.StartingWeight - (f.Weight - s)
+                match groupedChildren with 
+                | ((_, (f::_))::(s, _)::_) -> f.StartingWeight - (f.Weight - s)
+                | _ -> failwith "computeWeightRec - error"
             else
                 let newWeight = children |> List.sumBy (fun e -> e.Weight) |> (+) h.Weight
                 computeWeightRec ({h with Weight =  newWeight}::acc) t
