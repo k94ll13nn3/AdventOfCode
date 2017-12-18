@@ -22,3 +22,9 @@ let (|Regex|_|) pattern input =
     else None
 
 let inline charToInt (c:char) = int c - int '0'
+
+module Array =
+    let copySet i v (arr:'a[]) =
+        let n = Array.copy arr
+        n.[i] <- v
+        n
