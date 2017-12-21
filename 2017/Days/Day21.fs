@@ -2,6 +2,9 @@ module Day21
 
 open Helper
 
+// for future reference : https://www.reddit.com/r/adventofcode/comments/7l78eb/2017_day_21_solutions/drk4ohr/
+// much simpler that the current solution
+
 let flip flip1 flip2  (a:char[,]) = 
     let l = a|> Array2D.length1
     Array2D.init l l (fun i j -> a.[(if flip1 then l - i - 1 else i),(if flip2 then l - j - 1 else j)])
