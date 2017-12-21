@@ -43,5 +43,13 @@ let peek q =
         let bs = List.rev fs
         Some bs.Head
 
+let countBy projection q =
+    match q with
+    | Queue(fs, bs) -> List.countBy projection (fs@bs)
+    | Stack(l) -> List.countBy projection l
+
+let takeAndAdd e q =
+    let (_, newContainer) = take q in add newContainer e
+
 let (-->) e q = add q e
 let (==>) e q = addList q e
