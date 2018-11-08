@@ -16,6 +16,8 @@ namespace AdventOfCode.Days
 
         protected Day() => _dayNumber = GetType().Name.Substring(3);
 
+        public abstract string Title { get; }
+
         public ReadOnlySpan<char> GetContent()
         {
             if (_content is null)
@@ -50,9 +52,11 @@ namespace AdventOfCode.Days
 
         private class DummyDay : Day
         {
-            public override string ProcessFirst() => "Dummy";
+            public override string Title => "<No title>";
 
-            public override string ProcessSecond() => "Dummy";
+            public override string ProcessFirst() => "<No result>";
+
+            public override string ProcessSecond() => "<No result>";
         }
     }
 }
