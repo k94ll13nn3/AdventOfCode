@@ -46,6 +46,11 @@ namespace AdventOfCode.Days
             }
         }
 
+        public IEnumerable<string> GetLinesAsStrings()
+        {
+            return File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
+        }
+
         public abstract string ProcessFirst();
 
         public abstract string ProcessSecond();
