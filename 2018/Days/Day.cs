@@ -28,6 +28,16 @@ namespace AdventOfCode.Days
             return _content.AsSpan();
         }
 
+        public string GetContentAsString()
+        {
+            if (_content is null)
+            {
+                _content = File.ReadAllText($"Inputs/Input{_dayNumber}.txt");
+            }
+
+            return _content;
+        }
+
         public IEnumerable<ReadOnlyMemory<char>> GetLines()
         {
             if (_lines is null)
@@ -48,7 +58,12 @@ namespace AdventOfCode.Days
 
         public IEnumerable<string> GetLinesAsStrings()
         {
-            return File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
+            if (_lines is null)
+            {
+                _lines = File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
+            }
+
+            return _lines;
         }
 
         public abstract string ProcessFirst();
