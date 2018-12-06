@@ -29,26 +29,28 @@ namespace AdventOfCode.Days
 
         private int Collapse(string polymer)
         {
-            var content = polymer.ToList();
-            bool hasModifications = true;
-
-            while (hasModifications)
+            var stack = new Stack<char>();
+            foreach (var c in polymer)
             {
-                hasModifications = false;
-
-                for (int i = content.Count - 1; i >= 1; i--)
+                if (stack.Count == 0)
                 {
-                    if ((content[i] + 32) == content[i - 1] || (content[i - 1] + 32) == content[i])
+                    stack.Push(c);
+                }
+                else
+                {
+                    var peek = stack.Peek();
+                    if (((c + 32) == peek) || ((peek + 32) == c))
                     {
-                        content.RemoveAt(i);
-                        content.RemoveAt(i - 1);
-                        i--;
-                        hasModifications = true;
+                        stack.Pop();
+                    }
+                    else
+                    {
+                        stack.Push(c);
                     }
                 }
             }
 
-            return content.Count;
+            return stack.Count;
         }
     }
 }
