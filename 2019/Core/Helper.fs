@@ -31,6 +31,12 @@ module Array =
         n.[i] <- v
         n
 
+    let copySet2 i v j t (arr: 'a []) =
+        let n = Array.copy arr
+        n.[i] <- v
+        n.[j] <- t
+        n
+
     let first (arr: 'a array) = arr.[0]
 
     let others (arr: 'a array) = arr.[1..]
