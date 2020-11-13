@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.64
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AF29BAAE-CEBB-4131-98E6-A93DE1F2DD07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventOfCode", "src\AdventOfCode\AdventOfCode.csproj", "{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventOfCode", "src\AdventOfCode\AdventOfCode.csproj", "{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions items", "Solutions items", "{99B8AAA4-9547-4FEA-B0DB-10A1A297897A}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		global.json = global.json
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,7 +38,13 @@ Global
 		{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC}.Release|x86.ActiveCfg = Release|Any CPU
 		{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{74AF7EA5-D9C8-46C1-B756-D262CC95AAFC} = {AF29BAAE-CEBB-4131-98E6-A93DE1F2DD07}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D93CA067-25DB-4D3E-88B1-8F199217B929}
 	EndGlobalSection
 EndGlobal
