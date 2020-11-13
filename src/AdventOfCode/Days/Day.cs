@@ -20,12 +20,7 @@ namespace AdventOfCode.Days
 
         public ReadOnlySpan<char> GetContent()
         {
-            if (_content is null)
-            {
-                _content = File.ReadAllText($"Inputs/Input{_dayNumber}.txt");
-            }
-
-            return _content.AsSpan();
+            return GetContentAsString().AsSpan();
         }
 
         public string GetContentAsString()
@@ -33,18 +28,18 @@ namespace AdventOfCode.Days
             return _content ??= File.ReadAllText($"Inputs/Input{_dayNumber}.txt");
         }
 
+        public int[] GetContentAsIntArray(char separator)
+        {
+            return Array.ConvertAll(GetContentAsString().Split(separator), int.Parse);
+        }
+
         public IEnumerable<ReadOnlyMemory<char>> GetLines()
         {
-            if (_lines is null)
-            {
-                _lines = File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
-            }
-
             return GetLinesImpl();
 
             IEnumerable<ReadOnlyMemory<char>> GetLinesImpl()
             {
-                foreach (string line in _lines)
+                foreach (string line in GetLinesAsStrings())
                 {
                     yield return line.AsMemory();
                 }
