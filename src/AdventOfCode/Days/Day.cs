@@ -10,9 +10,9 @@ namespace AdventOfCode.Days
 
         private readonly string _dayNumber;
 
-        private string _content = string.Empty;
+        private string? _content;
 
-        private string[] _lines = Array.Empty<string>();
+        private string[]? _lines;
 
         protected Day() => _dayNumber = GetType().Name.Substring(3);
 
