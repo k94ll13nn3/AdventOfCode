@@ -49,6 +49,7 @@ namespace AdventOfCode
         {
             return dayNumber switch
             {
+                "1" => new Day1(),
                 _ => Day.Empty
             };
         }
