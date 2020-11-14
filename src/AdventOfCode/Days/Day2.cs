@@ -13,7 +13,9 @@ namespace AdventOfCode.Days
             program[1] = 12;
             program[2] = 2;
 
-            return Compute(program).ToString();
+            IntcodeInterpreter.Run(program, 0);
+
+            return program[0].ToString();
         }
 
         public override string ProcessSecond()
@@ -32,25 +34,11 @@ namespace AdventOfCode.Days
                         program.CopyTo(array, 0);
                         array[1] = i;
                         array[2] = j;
-                        yield return (i, j, Compute(array));
+                        IntcodeInterpreter.Run(array, 0);
+                        yield return (i, j, array[0]);
                     }
                 }
             }
-        }
-
-        private static int Compute(int[] program)
-        {
-            int pointer = 0;
-            while (program[pointer] != 99)
-            {
-                program[program[pointer + 3]] = program[pointer] == 1
-                    ? program[program[pointer + 1]] + program[program[pointer + 2]]
-                    : program[program[pointer + 1]] * program[program[pointer + 2]];
-
-                pointer += 4;
-            }
-
-            return program[0];
         }
     }
 }

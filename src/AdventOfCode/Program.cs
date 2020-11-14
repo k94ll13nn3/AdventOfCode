@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using AdventOfCode.Days;
 
@@ -10,15 +11,14 @@ namespace AdventOfCode
         {
             if (args is null || args.Length < 1)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Please enter a day number");
-                Console.ResetColor();
+                ColorWriteLine("Please enter a day number", ConsoleColor.Red);
                 return;
             }
 
             Day day = GetDay(args[0]);
 
-            Console.WriteLine($"Day {args[0]}: {day.Title}{Environment.NewLine}");
+            Console.WriteLine($"Day {args[0]}: {day.Title}");
+            Console.WriteLine();
 
             var timer = new Stopwatch();
 
@@ -27,22 +27,44 @@ namespace AdventOfCode
             string firstPart = day.ProcessFirst();
             timer.Stop();
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write($"    {firstPart} ");
-            Console.ForegroundColor = GetColorForElapsedTime(timer.ElapsedMilliseconds);
-            Console.WriteLine($"({timer.ElapsedMilliseconds}ms)");
-            Console.ResetColor();
+            ColorWrite($"    {firstPart} ", ConsoleColor.DarkGray);
+            ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
             timer.Restart();
 
             string secondPart = day.ProcessSecond();
             timer.Stop();
 
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write($"    {secondPart} ");
-            Console.ForegroundColor = GetColorForElapsedTime(timer.ElapsedMilliseconds);
-            Console.WriteLine($"({timer.ElapsedMilliseconds}ms)");
-            Console.ResetColor();
+            ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
+            ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+
+            Console.WriteLine();
+            Console.WriteLine("Checking Intcode...");
+            foreach ((Day intcodeDay, string firstAnswer, string secondAnswer) in GetIntcodeDays())
+            {
+                ColorWrite($"{intcodeDay.GetType()} ({intcodeDay.Title}): ", ConsoleColor.DarkGray);
+                if (intcodeDay.ProcessFirst() == firstAnswer)
+                {
+                    ColorWrite("OK", ConsoleColor.Green);
+                }
+                else
+                {
+                    ColorWrite("KO", ConsoleColor.Red);
+                }
+
+                ColorWrite("/", ConsoleColor.DarkGray);
+
+                if (intcodeDay.ProcessSecond() == secondAnswer)
+                {
+                    ColorWrite("OK", ConsoleColor.Green);
+                }
+                else
+                {
+                    ColorWrite("KO", ConsoleColor.Red);
+                }
+
+                Console.WriteLine();
+            }
         }
 
         private static Day GetDay(string dayNumber)
@@ -59,6 +81,15 @@ namespace AdventOfCode
             };
         }
 
+        private static List<(Day intcodeDay, string firstAnswer, string secondAnswer)> GetIntcodeDays()
+        {
+            return new()
+            {
+                (new Day2(), "4138687", "6635"),
+                (new Day5(), "2845163", "9436229"),
+            };
+        }
+
         private static ConsoleColor GetColorForElapsedTime(long elapsedMilliseconds)
         {
             return elapsedMilliseconds switch
@@ -67,6 +98,20 @@ namespace AdventOfCode
                 < 1250 => ConsoleColor.Yellow,
                 _ => ConsoleColor.Red,
             };
+        }
+
+        private static void ColorWrite(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.Write(text);
+            Console.ResetColor();
+        }
+
+        private static void ColorWriteLine(string text, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ResetColor();
         }
     }
 }
