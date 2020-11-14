@@ -1,22 +1,27 @@
-﻿namespace AdventOfCode.Days
+﻿using System;
+using System.Collections.Generic;
+
+namespace AdventOfCode.Days
 {
     internal static class IntcodeInterpreter
     {
-        public static int Run(int[] program, int input)
+        public static (string state, List<int> outputs, int pointer) Run(int[] program, int input)
         {
-            int pointer = 0;
-            int output = 0;
+            return Run(program, new Queue<int>(new[] { input }));
+        }
+
+        public static (string state, List<int> outputs, int pointer) Run(int[] program, Queue<int>? inputs, int pointer = 0)
+        {
+            List<int> outputs = new();
             int par1 = 0;
             int par2 = 0;
-            bool stop = false;
-            while (!stop)
+            while (true)
             {
-                string instruction = $"00000{program[pointer]}";
+                string instruction = program[pointer].ToString().PadLeft(5, '0');
                 switch (instruction[^2..])
                 {
                     case "99":
-                        stop = true;
-                        break;
+                        return ("ENDED", outputs, pointer);
 
                     case "01":
                         par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
@@ -33,12 +38,20 @@
                         break;
 
                     case "03":
-                        program[program[pointer + 1]] = input;
-                        pointer += 2;
+                        if (inputs?.Count > 0)
+                        {
+                            program[program[pointer + 1]] = inputs.Dequeue();
+                            pointer += 2;
+                        }
+                        else
+                        {
+                            return ("INPUT_NEEDED", outputs, pointer);
+                        }
+
                         break;
 
                     case "04":
-                        output = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
+                        outputs.Add(instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1]);
                         pointer += 2;
                         break;
 
@@ -86,7 +99,7 @@
                 }
             }
 
-            return output;
+            throw new InvalidOperationException("Program incomplete");
         }
     }
 }
