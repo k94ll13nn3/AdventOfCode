@@ -6,12 +6,16 @@
 
         public override string ProcessFirst()
         {
-            return IntcodeInterpreter.Run(GetContentAsIntArray(','), 1).outputs[^1].ToString();
+            var interpreter = new IntcodeInterpreter(GetContentAsIntArray(','));
+            interpreter.Run(1);
+            return interpreter.Outputs[^1].ToString();
         }
 
         public override string ProcessSecond()
         {
-            return IntcodeInterpreter.Run(GetContentAsIntArray(','), 5).outputs[^1].ToString();
+            var interpreter = new IntcodeInterpreter(GetContentAsIntArray(','));
+            interpreter.Run(5);
+            return interpreter.Outputs[^1].ToString();
         }
     }
 }
