@@ -3,98 +3,117 @@ using System.Collections.Generic;
 
 namespace AdventOfCode.Days
 {
-    internal static class IntcodeInterpreter
+    public class IntcodeInterpreter
     {
-        public static (string state, List<int> outputs, int pointer) Run(int[] program, int input)
+        public const string Stopped = nameof(Stopped);
+        public const string NotStarted = nameof(NotStarted);
+        public const string InputNeeded = nameof(InputNeeded);
+
+        private readonly int[] _program;
+
+        public IntcodeInterpreter(int[] program)
         {
-            return Run(program, new Queue<int>(new[] { input }));
+            _program = program;
         }
 
-        public static (string state, List<int> outputs, int pointer) Run(int[] program, Queue<int>? inputs, int pointer = 0)
+        public List<int> Outputs { get; } = new();
+
+        public string State { get; set; } = NotStarted;
+
+        public int Cursor { get; private set; }
+
+        public void Run(int input)
         {
-            List<int> outputs = new();
+            Run(new Queue<int>(new[] { input }));
+        }
+
+        public void Run(Queue<int>? inputs)
+        {
+            Outputs.Clear();
             int par1 = 0;
             int par2 = 0;
             while (true)
             {
-                string instruction = program[pointer].ToString().PadLeft(5, '0');
+                string instruction = _program[Cursor].ToString().PadLeft(5, '0');
                 switch (instruction[^2..])
                 {
                     case "99":
-                        return ("ENDED", outputs, pointer);
+                        State = Stopped;
+                        return;
 
                     case "01":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
-                        program[program[pointer + 3]] = par1 + par2;
-                        pointer += 4;
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
+                        _program[_program[Cursor + 3]] = par1 + par2;
+                        Cursor += 4;
                         break;
 
                     case "02":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
-                        program[program[pointer + 3]] = par1 * par2;
-                        pointer += 4;
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
+                        _program[_program[Cursor + 3]] = par1 * par2;
+                        Cursor += 4;
                         break;
 
                     case "03":
                         if (inputs?.Count > 0)
                         {
-                            program[program[pointer + 1]] = inputs.Dequeue();
-                            pointer += 2;
+                            _program[_program[Cursor + 1]] = inputs.Dequeue();
+                            Cursor += 2;
                         }
                         else
                         {
-                            return ("INPUT_NEEDED", outputs, pointer);
+                            State = InputNeeded;
+                            return;
                         }
 
                         break;
 
                     case "04":
-                        outputs.Add(instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1]);
-                        pointer += 2;
+                        Outputs.Add(instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1]);
+                        Cursor += 2;
                         break;
 
                     case "05":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
                         if (par1 != 0)
                         {
-                            pointer = par2;
+                            Cursor = par2;
                         }
                         else
                         {
-                            pointer += 3;
+                            Cursor += 3;
                         }
 
                         break;
 
                     case "06":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
                         if (par1 == 0)
                         {
-                            pointer = par2;
+                            Cursor = par2;
                         }
                         else
                         {
-                            pointer += 3;
+                            Cursor += 3;
                         }
 
                         break;
 
                     case "07":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
-                        program[program[pointer + 3]] = par1 < par2 ? 1 : 0;
-                        pointer += 4;
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
+                        _program[_program[Cursor + 3]] = par1 < par2 ? 1 : 0;
+                        Cursor += 4;
                         break;
 
                     case "08":
-                        par1 = instruction[^3] == '0' ? program[program[pointer + 1]] : program[pointer + 1];
-                        par2 = instruction[^4] == '0' ? program[program[pointer + 2]] : program[pointer + 2];
-                        program[program[pointer + 3]] = par1 == par2 ? 1 : 0;
-                        pointer += 4;
+                        par1 = instruction[^3] == '0' ? _program[_program[Cursor + 1]] : _program[Cursor + 1];
+                        par2 = instruction[^4] == '0' ? _program[_program[Cursor + 2]] : _program[Cursor + 2];
+                        _program[_program[Cursor + 3]] = par1 == par2 ? 1 : 0;
+                        Cursor += 4;
                         break;
                 }
             }

@@ -13,7 +13,7 @@ namespace AdventOfCode.Days
             program[1] = 12;
             program[2] = 2;
 
-            IntcodeInterpreter.Run(program, null);
+            new IntcodeInterpreter(program).Run(null);
 
             return program[0].ToString();
         }
@@ -34,7 +34,7 @@ namespace AdventOfCode.Days
                         program.CopyTo(array, 0);
                         array[1] = i;
                         array[2] = j;
-                        IntcodeInterpreter.Run(array, null);
+                        new IntcodeInterpreter(array).Run(null);
                         yield return (i, j, array[0]);
                     }
                 }

@@ -64,17 +64,17 @@ namespace AdventOfCode.Days
         private static int Compute(int[] program, int[] settings)
         {
             List<int> outputs = new() { 0 };
-            Queue<(int[] program, int p)> amplifiers = new();
+            Queue<IntcodeInterpreter> amplifiers = new();
             for (int i = 0; i < 5; i++)
             {
-                amplifiers.Enqueue((program.ToArray(), 0));
+                amplifiers.Enqueue(new IntcodeInterpreter(program.ToArray()));
             }
 
             int loop = 0;
             Queue<int> inputs = new();
             while (amplifiers.Count > 0)
             {
-                (int[] amplifier, int p) = amplifiers.Dequeue();
+                IntcodeInterpreter amplifier = amplifiers.Dequeue();
 
                 if (loop < 5)
                 {
@@ -86,14 +86,14 @@ namespace AdventOfCode.Days
                     inputs.Enqueue(item);
                 }
 
-                (string state, List<int> outputs, int pointer) result = IntcodeInterpreter.Run(amplifier, inputs, p);
+                amplifier.Run(inputs);
 
-                if (result.state == "INPUT_NEEDED")
+                if (amplifier.State == IntcodeInterpreter.InputNeeded)
                 {
-                    amplifiers.Enqueue((amplifier, result.pointer));
+                    amplifiers.Enqueue(amplifier);
                 }
 
-                outputs = result.outputs;
+                outputs = amplifier.Outputs;
 
                 loop++;
             }
