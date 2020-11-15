@@ -33,6 +33,11 @@ namespace AdventOfCode.Days
             return Array.ConvertAll(GetContentAsString().Split(separator), int.Parse);
         }
 
+        public long[] GetContentAsLongArray(char separator)
+        {
+            return Array.ConvertAll(GetContentAsString().Split(separator), long.Parse);
+        }
+
         public IEnumerable<ReadOnlyMemory<char>> GetLines()
         {
             return GetLinesImpl();

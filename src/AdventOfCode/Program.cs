@@ -79,6 +79,7 @@ namespace AdventOfCode
                 "6" => new Day6(),
                 "7" => new Day7(),
                 "8" => new Day8(),
+                "9" => new Day9(),
                 _ => Day.Empty
             };
         }
@@ -90,6 +91,7 @@ namespace AdventOfCode
                 (new Day2(), "4138687", "6635"),
                 (new Day5(), "2845163", "9436229"),
                 (new Day7(), "18812", "25534964"),
+                (new Day9(), "2457252183", "70634"),
             };
         }
 
