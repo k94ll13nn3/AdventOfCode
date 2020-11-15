@@ -9,33 +9,35 @@ namespace AdventOfCode.Days
 
         public override string ProcessFirst()
         {
-            int[] program = GetContentAsIntArray(',');
+            long[] program = GetContentAsLongArray(',');
             program[1] = 12;
             program[2] = 2;
 
-            new IntcodeInterpreter(program).Run(null);
+            var interpreter = new IntcodeInterpreter(program);
+            interpreter.Run(null);
 
-            return program[0].ToString();
+            return interpreter[0].ToString();
         }
 
         public override string ProcessSecond()
         {
-            int[] program = GetContentAsIntArray(',');
-            (int noun, int verb, int _) = GetSequence().First(x => x.result == 19690720);
+            long[] program = GetContentAsLongArray(',');
+            (long noun, long verb, _) = GetSequence().First(x => x.result == 19690720);
             return ((noun * 100) + verb).ToString();
 
-            IEnumerable<(int noun, int verb, int result)> GetSequence()
+            IEnumerable<(long noun, long verb, long result)> GetSequence()
             {
                 for (int i = 0; i < 99; i++)
                 {
                     for (int j = 0; j < 99; j++)
                     {
-                        int[] array = new int[program.Length];
+                        long[] array = new long[program.Length];
                         program.CopyTo(array, 0);
                         array[1] = i;
                         array[2] = j;
-                        new IntcodeInterpreter(array).Run(null);
-                        yield return (i, j, array[0]);
+                        var interpreter = new IntcodeInterpreter(array);
+                        interpreter.Run(null);
+                        yield return (i, j, interpreter[0]);
                     }
                 }
             }

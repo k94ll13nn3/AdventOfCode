@@ -10,12 +10,12 @@ namespace AdventOfCode.Days
 
         public override string ProcessFirst()
         {
-            int[] program = GetContentAsIntArray(',');
-            int maxSignal = 0;
+            long[] program = GetContentAsLongArray(',');
+            long maxSignal = 0;
 
             foreach (int[] permutation in GetPermutations(new int[] { 0, 1, 2, 3, 4 }))
             {
-                int signal = Compute(program, permutation);
+                long signal = Compute(program, permutation);
                 maxSignal = Math.Max(maxSignal, signal);
             }
 
@@ -24,12 +24,12 @@ namespace AdventOfCode.Days
 
         public override string ProcessSecond()
         {
-            int[] program = GetContentAsIntArray(',');
-            int maxSignal = 0;
+            long[] program = GetContentAsLongArray(',');
+            long maxSignal = 0;
 
             foreach (int[] permutation in GetPermutations(new int[] { 5, 6, 7, 8, 9 }))
             {
-                int signal = Compute(program, permutation);
+                long signal = Compute(program, permutation);
                 maxSignal = Math.Max(maxSignal, signal);
             }
 
@@ -61,9 +61,9 @@ namespace AdventOfCode.Days
             }
         }
 
-        private static int Compute(int[] program, int[] settings)
+        private static long Compute(long[] program, int[] settings)
         {
-            List<int> outputs = new() { 0 };
+            List<long> outputs = new() { 0 };
             Queue<IntcodeInterpreter> amplifiers = new();
             for (int i = 0; i < 5; i++)
             {
@@ -71,7 +71,7 @@ namespace AdventOfCode.Days
             }
 
             int loop = 0;
-            Queue<int> inputs = new();
+            Queue<long> inputs = new();
             while (amplifiers.Count > 0)
             {
                 IntcodeInterpreter amplifier = amplifiers.Dequeue();
@@ -81,7 +81,7 @@ namespace AdventOfCode.Days
                     inputs.Enqueue(settings[loop]);
                 }
 
-                foreach (int item in outputs)
+                foreach (long item in outputs)
                 {
                     inputs.Enqueue(item);
                 }
