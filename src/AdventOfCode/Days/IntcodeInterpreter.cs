@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AdventOfCode.Days
 {
@@ -9,19 +10,21 @@ namespace AdventOfCode.Days
         public const string NotStarted = nameof(NotStarted);
         public const string InputNeeded = nameof(InputNeeded);
 
-        private readonly long[] _program;
+        private long[] _program;
         private long _relativeBase;
+        private string _currentInstruction = string.Empty;
 
         public IntcodeInterpreter(long[] program)
         {
             _ = program ?? throw new ArgumentNullException(nameof(program));
 
-            _program = new long[100000];
-            program.CopyTo(_program, 0);
+            _program = program.ToArray();
         }
 
         public List<long> Outputs { get; } = new();
+
         public string State { get; set; } = NotStarted;
+
         public long Cursor { get; private set; }
 
         public long this[int index] => _program[index];
@@ -34,35 +37,29 @@ namespace AdventOfCode.Days
         public void Run(Queue<long>? inputs)
         {
             Outputs.Clear();
-            long par1 = 0;
-            long par2 = 0;
             while (true)
             {
-                string instruction = _program[Cursor].ToString().PadLeft(5, '0');
-                switch (instruction[^2..])
+                _currentInstruction = _program[Cursor].ToString().PadLeft(5, '0');
+                switch (_currentInstruction[^2..])
                 {
                     case "99":
                         State = Stopped;
                         return;
 
                     case "01":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        _program[GetPosition(instruction, 3)] = par1 + par2;
+                        Write(GetValue(1) + GetValue(2), GetPosition(3));
                         Cursor += 4;
                         break;
 
                     case "02":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        _program[GetPosition(instruction, 3)] = par1 * par2;
+                        Write(GetValue(1) * GetValue(2), GetPosition(3));
                         Cursor += 4;
                         break;
 
                     case "03":
                         if (inputs?.Count > 0)
                         {
-                            _program[GetPosition(instruction, 1)] = inputs.Dequeue();
+                            Write(inputs.Dequeue(), GetPosition(1));
                             Cursor += 2;
                         }
                         else
@@ -74,55 +71,30 @@ namespace AdventOfCode.Days
                         break;
 
                     case "04":
-                        Outputs.Add(GetParameter(instruction, 1));
+                        Outputs.Add(GetValue(1));
                         Cursor += 2;
                         break;
 
                     case "05":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        if (par1 != 0)
-                        {
-                            Cursor = par2;
-                        }
-                        else
-                        {
-                            Cursor += 3;
-                        }
-
+                        Cursor = GetValue(1) != 0 ? GetValue(2) : Cursor + 3;
                         break;
 
                     case "06":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        if (par1 == 0)
-                        {
-                            Cursor = par2;
-                        }
-                        else
-                        {
-                            Cursor += 3;
-                        }
-
+                        Cursor = GetValue(1) == 0 ? GetValue(2) : Cursor + 3;
                         break;
 
                     case "07":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        _program[GetPosition(instruction, 3)] = par1 < par2 ? 1 : 0;
+                        Write(GetValue(1) < GetValue(2) ? 1 : 0, GetPosition(3));
                         Cursor += 4;
                         break;
 
                     case "08":
-                        par1 = GetParameter(instruction, 1);
-                        par2 = GetParameter(instruction, 2);
-                        _program[GetPosition(instruction, 3)] = par1 == par2 ? 1 : 0;
+                        Write(GetValue(1) == GetValue(2) ? 1 : 0, GetPosition(3));
                         Cursor += 4;
                         break;
 
                     case "09":
-                        par1 = GetParameter(instruction, 1);
-                        _relativeBase += par1;
+                        _relativeBase += GetValue(1);
                         Cursor += 2;
                         break;
                 }
@@ -131,25 +103,32 @@ namespace AdventOfCode.Days
             throw new InvalidOperationException("Program incomplete");
         }
 
-        private long GetParameter(string instruction, int parameterNumber)
+        private long GetValue(int parameterNumber)
         {
-            return instruction[^(2 + parameterNumber)] switch
+            return _program[GetPosition(parameterNumber)];
+        }
+
+        private long GetPosition(int parameterNumber)
+        {
+            return _currentInstruction[^(2 + parameterNumber)] switch
             {
-                '0' => _program[_program[Cursor + parameterNumber]],
-                '1' => _program[Cursor + parameterNumber],
-                '2' => _program[_program[Cursor + parameterNumber] + _relativeBase],
+                '0' => _program[Cursor + parameterNumber],
+                '1' => Cursor + parameterNumber,
+                '2' => _program[Cursor + parameterNumber] + _relativeBase,
                 _ => throw new InvalidOperationException(),
             };
         }
 
-        private long GetPosition(string instruction, int parameterNumber)
+        private void Write(long value, long position)
         {
-            return instruction[^(2 + parameterNumber)] switch
+            if (position >= _program.Length)
             {
-                '0' => _program[Cursor + parameterNumber],
-                '2' => _program[Cursor + parameterNumber] + _relativeBase,
-                _ => throw new InvalidOperationException(),
-            };
+                long[] array = new long[position + 1];
+                _program.CopyTo(array, 0);
+                _program = array;
+            }
+
+            _program[position] = value;
         }
     }
 }
