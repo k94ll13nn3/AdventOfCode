@@ -12,7 +12,7 @@ namespace AdventOfCode.Days
             const int width = 25;
             const int height = 6;
 
-            string input = GetContentAsString();
+            string input = GetContent();
 
             int zerosCount = int.MaxValue;
             int onesCount = 0;
@@ -37,7 +37,7 @@ namespace AdventOfCode.Days
             const int width = 25;
             const int height = 6;
 
-            string input = GetContentAsString();
+            string input = GetContent();
 
             char[,] map = new char[height, width];
             int numberOfLayers = input.Length / (width * height);

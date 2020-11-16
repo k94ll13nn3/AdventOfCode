@@ -8,12 +8,12 @@ namespace AdventOfCode.Days
 
         public override string ProcessFirst()
         {
-            return GetLinesAsStrings().Select(int.Parse).Select(x => (x / 3) - 2).Sum().ToString();
+            return GetLines().Select(int.Parse).Select(x => (x / 3) - 2).Sum().ToString();
         }
 
         public override string ProcessSecond()
         {
-            return GetLinesAsStrings().Select(int.Parse).Select(x => GetFuelRec(x, 0)).Sum().ToString();
+            return GetLines().Select(int.Parse).Select(x => GetFuelRec(x, 0)).Sum().ToString();
 
             static int GetFuelRec(int mass, int acc)
             {

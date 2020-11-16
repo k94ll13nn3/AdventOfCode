@@ -20,7 +20,7 @@ namespace AdventOfCode.Days
 
         private (int distance, int steps) Compute()
         {
-            var lines = GetLinesAsStrings().ToList();
+            var lines = GetLines().ToList();
             IEnumerable<(char direction, int distance)> firstWire = lines[0].Split(',').Select(x => (x[0], int.Parse(x[1..])));
             IEnumerable<(char direction, int distance)> secondWire = lines[1].Split(',').Select(x => (x[0], int.Parse(x[1..])));
 
