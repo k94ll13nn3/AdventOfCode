@@ -6,8 +6,6 @@ namespace AdventOfCode.Days
 {
     public abstract class Day
     {
-        public static readonly Day Empty = new DummyDay();
-
         private readonly string _dayNumber;
 
         private string? _content;
@@ -59,14 +57,5 @@ namespace AdventOfCode.Days
         public abstract string ProcessFirst();
 
         public abstract string ProcessSecond();
-
-        private class DummyDay : Day
-        {
-            public override string Title => "<No title>";
-
-            public override string ProcessFirst() => "<No result>";
-
-            public override string ProcessSecond() => "<No result>";
-        }
     }
 }
