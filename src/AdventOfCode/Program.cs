@@ -85,7 +85,8 @@ namespace AdventOfCode
                 "9" => new Day9(),
                 "10" => new Day10(),
                 "11" => new Day11(),
-                _ => Day.Empty
+                "12" => new Day12(),
+                _ => throw new InvalidOperationException(),
             };
         }
 
@@ -105,8 +106,8 @@ namespace AdventOfCode
         {
             return elapsedMilliseconds switch
             {
-                < 750 => ConsoleColor.Green,
-                < 1250 => ConsoleColor.Yellow,
+                < 250 => ConsoleColor.Green,
+                < 500 => ConsoleColor.Yellow,
                 _ => ConsoleColor.Red,
             };
         }
