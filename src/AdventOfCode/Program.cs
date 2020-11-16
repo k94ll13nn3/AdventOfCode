@@ -38,32 +38,35 @@ namespace AdventOfCode
             ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
             ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
-            Console.WriteLine();
-            Console.WriteLine("Checking Intcode...");
-            foreach ((Day intcodeDay, string firstAnswer, string secondAnswer) in GetIntcodeDays())
+            if (!Debugger.IsAttached)
             {
-                ColorWrite($"{intcodeDay.GetType()} ({intcodeDay.Title}): ", ConsoleColor.DarkGray);
-                if (intcodeDay.ProcessFirst() == firstAnswer)
-                {
-                    ColorWrite("OK", ConsoleColor.Green);
-                }
-                else
-                {
-                    ColorWrite("KO", ConsoleColor.Red);
-                }
-
-                ColorWrite("/", ConsoleColor.DarkGray);
-
-                if (intcodeDay.ProcessSecond() == secondAnswer)
-                {
-                    ColorWrite("OK", ConsoleColor.Green);
-                }
-                else
-                {
-                    ColorWrite("KO", ConsoleColor.Red);
-                }
-
                 Console.WriteLine();
+                Console.WriteLine("Checking Intcode...");
+                foreach ((Day intcodeDay, string firstAnswer, string secondAnswer) in GetIntcodeDays())
+                {
+                    ColorWrite($"{intcodeDay.GetType().ToString().Split('.')[^1]} ({intcodeDay.Title}): ", ConsoleColor.DarkGray);
+                    if (intcodeDay.ProcessFirst() == firstAnswer)
+                    {
+                        ColorWrite("OK", ConsoleColor.Green);
+                    }
+                    else
+                    {
+                        ColorWrite("KO", ConsoleColor.Red);
+                    }
+
+                    ColorWrite("/", ConsoleColor.DarkGray);
+
+                    if (intcodeDay.ProcessSecond() == secondAnswer)
+                    {
+                        ColorWrite("OK", ConsoleColor.Green);
+                    }
+                    else
+                    {
+                        ColorWrite("KO", ConsoleColor.Red);
+                    }
+
+                    Console.WriteLine();
+                }
             }
         }
 
@@ -81,6 +84,7 @@ namespace AdventOfCode
                 "8" => new Day8(),
                 "9" => new Day9(),
                 "10" => new Day10(),
+                "11" => new Day11(),
                 _ => Day.Empty
             };
         }
@@ -93,6 +97,7 @@ namespace AdventOfCode
                 (new Day5(), "2845163", "9436229"),
                 (new Day7(), "18812", "25534964"),
                 (new Day9(), "2457252183", "70634"),
+                (new Day11(), "2720", "SEE DRAWING (249)"),
             };
         }
 
