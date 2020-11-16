@@ -105,7 +105,9 @@ namespace AdventOfCode.Days
 
         private long GetValue(int parameterNumber)
         {
-            return _program[GetPosition(parameterNumber)];
+            long position = GetPosition(parameterNumber);
+            EnsureProgramSize(position);
+            return _program[position];
         }
 
         private long GetPosition(int parameterNumber)
@@ -121,14 +123,18 @@ namespace AdventOfCode.Days
 
         private void Write(long value, long position)
         {
+            EnsureProgramSize(position);
+            _program[position] = value;
+        }
+
+        private void EnsureProgramSize(long position)
+        {
             if (position >= _program.Length)
             {
                 long[] array = new long[position + 1];
                 _program.CopyTo(array, 0);
                 _program = array;
             }
-
-            _program[position] = value;
         }
     }
 }
