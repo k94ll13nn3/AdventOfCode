@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using AdventOfCode.Days;
 
 namespace AdventOfCode
@@ -38,7 +39,7 @@ namespace AdventOfCode
             ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
             ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
-            if (!Debugger.IsAttached)
+            if (!Debugger.IsAttached && GetIntcodeDays().Any(x => x.intcodeDay.GetType() == day.GetType()))
             {
                 Console.WriteLine();
                 Console.WriteLine("Checking Intcode...");
@@ -87,6 +88,7 @@ namespace AdventOfCode
                 "11" => new Day11(),
                 "12" => new Day12(),
                 "13" => new Day13(),
+                "14" => new Day14(),
                 _ => throw new InvalidOperationException(),
             };
         }
