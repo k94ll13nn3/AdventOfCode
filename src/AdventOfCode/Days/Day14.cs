@@ -9,117 +9,39 @@ namespace AdventOfCode.Days
     {
         public override string Title => "Space Stoichiometry";
 
-        [SuppressMessage("Major Code Smell", "S2589", Justification = "False positive.")]
         public override string ProcessFirst()
         {
-            Dictionary<string, Reaction> reactions = ParseReactions();
-            Reaction fuelReaction = reactions["FUEL"];
-
-            Dictionary<string, int> inputsNeeded = reactions
-                .SelectMany(x => x.Value.Inputs)
-                .Select(x => x.Name)
-                .Distinct()
-                .Where(x => x != "ORE")
-                .ToDictionary(x => x, _ => 0);
-
-            foreach (Material materiel in fuelReaction.Inputs)
-            {
-                inputsNeeded[materiel.Name] += materiel.Quantity;
-            }
-
-            bool inputsHaveChanged = true;
-            while (inputsHaveChanged)
-            {
-                inputsHaveChanged = false;
-                foreach ((string name, int quantity) in inputsNeeded.Where(x => x.Value > 0))
-                {
-                    Reaction r = reactions[name];
-                    if (r.Inputs[0].Name != "ORE")
-                    {
-                        inputsHaveChanged = true;
-                        int x = (int)Math.Ceiling(quantity / (double)r.Output.Quantity);
-                        inputsNeeded[name] -= x * r.Output.Quantity; // might produce more than needed
-                        foreach (Material item in r.Inputs)
-                        {
-                            inputsNeeded[item.Name] += x * item.Quantity;
-                        }
-                    }
-                }
-            }
-
-            int oreNeeded = 0;
-            foreach ((string name, int quantity) in inputsNeeded.Where(x => x.Value > 0))
-            {
-                Reaction r = reactions[name];
-                int x = (int)Math.Ceiling(quantity / (double)r.Output.Quantity);
-                oreNeeded += r.Inputs[0].Quantity * x;
-            }
-
-            return oreNeeded.ToString();
+            return GetCostOfFuel(1).ToString();
         }
 
-        [SuppressMessage("Major Code Smell", "S2589", Justification = "False positive.")]
         public override string ProcessSecond()
         {
-            Dictionary<string, Reaction> reactions = ParseReactions();
-            Reaction fuelReaction = reactions["FUEL"];
-
-            Dictionary<string, int> inputsNeeded = reactions
-                .SelectMany(x => x.Value.Inputs)
-                .Select(x => x.Name)
-                .Distinct()
-                .Where(x => x != "ORE")
-                .ToDictionary(x => x, _ => 0);
-
-            long fuel = 0;
-            long oreConsumed = 0;
-            while (oreConsumed < 1000000000000)
+            long possibleCost = 1000000000000 / GetCostOfFuel(1);
+            long max = 0;
+            for (long i = possibleCost; i < possibleCost * 2; i += 10000)
             {
-                foreach (Material materiel in fuelReaction.Inputs)
+                if (GetCostOfFuel(i) > 1000000000000)
                 {
-                    inputsNeeded[materiel.Name] += materiel.Quantity;
+                    break;
                 }
 
-                bool inputsHaveChanged = true;
-                while (inputsHaveChanged)
+                max = i;
+            }
+
+            foreach (int item in new[] { 1000, 100, 100, 10 })
+            {
+                for (long i = max - item; i < max + item; i += item / 10)
                 {
-                    inputsHaveChanged = false;
-                    foreach ((string name, int quantity) in inputsNeeded.Where(x => x.Value > 0))
+                    if (GetCostOfFuel(i) > 1000000000000)
                     {
-                        Reaction r = reactions[name];
-                        if (r.Inputs[0].Name != "ORE")
-                        {
-                            inputsHaveChanged = true;
-                            int x = (int)Math.Ceiling(quantity / (double)r.Output.Quantity);
-                            inputsNeeded[name] -= x * r.Output.Quantity; // might produce more than needed
-                            foreach (Material item in r.Inputs)
-                            {
-                                inputsNeeded[item.Name] += x * item.Quantity;
-                            }
-                        }
+                        break;
                     }
-                }
 
-                foreach ((string name, int quantity) in inputsNeeded.Where(x => x.Value > 0))
-                {
-                    Reaction r = reactions[name];
-                    int x = (int)Math.Ceiling(quantity / (double)r.Output.Quantity);
-                    oreConsumed += r.Inputs[0].Quantity * x;
-                    inputsNeeded[name] -= x * r.Output.Quantity;
-                }
-
-                fuel++;
-
-                if (inputsNeeded.All(x => x.Value == 0))
-                {
-                    Console.WriteLine("ok");
-                    long x = 1000000000000 / oreConsumed;
-                    oreConsumed *= x;
-                    fuel *= x;
+                    max = i;
                 }
             }
 
-            return (fuel - 1).ToString(); // Minus 1 because of the last increase when ore is too much.
+            return max.ToString();
         }
 
         private static Reaction ParseReaction(string line)
@@ -136,24 +58,73 @@ namespace AdventOfCode.Days
             static Material ParseMaterial(string materialLine)
             {
                 string[] s = materialLine.Trim().Split(' ');
-                return new(int.Parse(s[0]), s[1]);
+                return new(long.Parse(s[0]), s[1]);
             }
         }
 
-        private Dictionary<string, Reaction> ParseReactions()
+        [SuppressMessage("Major Code Smell", "S2589", Justification = "False positive.")]
+        private long GetCostOfFuel(long fuelNeeded)
+        {
+            Dictionary<string, Reaction> reactions = ParseReactions(fuelNeeded);
+            Reaction fuelReaction = reactions["FUEL"];
+
+            Dictionary<string, long> inputsNeeded = reactions
+                .SelectMany(x => x.Value.Inputs)
+                .Select(x => x.Name)
+                .Distinct()
+                .Where(x => x != "ORE")
+                .ToDictionary(x => x, _ => 0L);
+
+            foreach (Material materiel in fuelReaction.Inputs)
+            {
+                inputsNeeded[materiel.Name] += materiel.Quantity * fuelReaction.Output.Quantity;
+            }
+
+            bool inputsHaveChanged = true;
+            while (inputsHaveChanged)
+            {
+                inputsHaveChanged = false;
+                foreach ((string name, long quantity) in inputsNeeded.Where(x => x.Value > 0))
+                {
+                    Reaction r = reactions[name];
+                    if (r.Inputs[0].Name != "ORE")
+                    {
+                        inputsHaveChanged = true;
+                        int x = (int)Math.Ceiling(quantity / (double)r.Output.Quantity);
+                        inputsNeeded[name] -= x * r.Output.Quantity; // might produce more than needed
+                        foreach (Material item in r.Inputs)
+                        {
+                            inputsNeeded[item.Name] += x * item.Quantity;
+                        }
+                    }
+                }
+            }
+
+            long oreNeeded = 0;
+            foreach ((string name, long quantity) in inputsNeeded.Where(x => x.Value > 0))
+            {
+                Reaction r = reactions[name];
+                long x = (long)Math.Ceiling(quantity / (double)r.Output.Quantity);
+                oreNeeded += r.Inputs[0].Quantity * x;
+            }
+
+            return oreNeeded;
+        }
+
+        private Dictionary<string, Reaction> ParseReactions(long fuelNeeded)
         {
             IEnumerable<string> lines = GetLines();
 
             var reactions = new List<Reaction>();
             foreach (string line in lines)
             {
-                reactions.Add(ParseReaction(line));
+                reactions.Add(ParseReaction(line.Replace("1 FUEL", $"{fuelNeeded} FUEL")));
             }
 
             return reactions.ToDictionary(x => x.Output.Name, x => x);
         }
 
-        record Material(int Quantity, string Name);
+        record Material(long Quantity, string Name);
         record Reaction(List<Material> Inputs, Material Output);
     }
 }
