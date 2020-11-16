@@ -55,7 +55,7 @@ namespace AdventOfCode.Days
         [SuppressMessage("Major Code Smell", "S1854", Justification = "False positive, see https://github.com/SonarSource/sonar-dotnet/issues/3126")]
         private Planet GetSystem()
         {
-            ILookup<string, string> lines = GetLinesAsStrings().ToLookup(x => x.Split(')')[0], x => x.Split(')')[1]);
+            ILookup<string, string> lines = GetLines().ToLookup(x => x.Split(')')[0], x => x.Split(')')[1]);
 
             return new Planet("COM", 0, GetPlanets("COM", 1));
 

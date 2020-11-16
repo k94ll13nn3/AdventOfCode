@@ -10,7 +10,7 @@ namespace AdventOfCode.Days
 
         public override string ProcessFirst()
         {
-            IList<int[]> moons = GetLinesAsStrings()
+            IList<int[]> moons = GetLines()
                 .Select(x => x.Split(new[] { ',', '=', '<', '>', ' ' }, StringSplitOptions.RemoveEmptyEntries))
                 .Select(x => GetMoon(int.Parse(x[1]), int.Parse(x[3]), int.Parse(x[5]), 0, 0, 0))
                 .ToList();
@@ -38,7 +38,7 @@ namespace AdventOfCode.Days
 
         public override string ProcessSecond()
         {
-            IList<int[]> moons = GetLinesAsStrings()
+            IList<int[]> moons = GetLines()
                 .Select(x => x.Split(new[] { ',', '=', '<', '>', ' ' }, StringSplitOptions.RemoveEmptyEntries))
                 .Select(x => GetMoon(int.Parse(x[1]), int.Parse(x[3]), int.Parse(x[5]), 0, 0, 0))
                 .ToList();

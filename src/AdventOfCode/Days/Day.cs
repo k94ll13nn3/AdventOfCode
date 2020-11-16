@@ -16,40 +16,17 @@ namespace AdventOfCode.Days
 
         public abstract string Title { get; }
 
-        public ReadOnlySpan<char> GetContent()
-        {
-            return GetContentAsString().AsSpan();
-        }
-
-        public string GetContentAsString()
+        public string GetContent()
         {
             return _content ??= File.ReadAllText($"Inputs/Input{_dayNumber}.txt");
         }
 
-        public int[] GetContentAsIntArray(char separator)
-        {
-            return Array.ConvertAll(GetContentAsString().Split(separator), int.Parse);
-        }
-
         public long[] GetContentAsLongArray(char separator)
         {
-            return Array.ConvertAll(GetContentAsString().Split(separator), long.Parse);
+            return Array.ConvertAll(GetContent().Split(separator), long.Parse);
         }
 
-        public IEnumerable<ReadOnlyMemory<char>> GetLines()
-        {
-            return GetLinesImpl();
-
-            IEnumerable<ReadOnlyMemory<char>> GetLinesImpl()
-            {
-                foreach (string line in GetLinesAsStrings())
-                {
-                    yield return line.AsMemory();
-                }
-            }
-        }
-
-        public IEnumerable<string> GetLinesAsStrings()
+        public IEnumerable<string> GetLines()
         {
             return _lines ??= File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
         }

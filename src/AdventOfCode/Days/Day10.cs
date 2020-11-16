@@ -10,13 +10,13 @@ namespace AdventOfCode.Days
 
         public override string ProcessFirst()
         {
-            IEnumerable<(int x, int y)> asteroids = GetAsteroidsCoordinates(GetLinesAsStrings().ToList());
+            IEnumerable<(int x, int y)> asteroids = GetAsteroidsCoordinates(GetLines().ToList());
             return Compute(asteroids).Asteroids.Count.ToString();
         }
 
         public override string ProcessSecond()
         {
-            IEnumerable<(int x, int y)> asteroids2 = GetAsteroidsCoordinates(GetLinesAsStrings().ToList());
+            IEnumerable<(int x, int y)> asteroids2 = GetAsteroidsCoordinates(GetLines().ToList());
             (int stationX, int stationY, _) = Compute(asteroids2);
             var asteroids = GetAsteroidsForStation(stationX, stationY, asteroids2)
                 .OrderBy(x => x.Angle)
