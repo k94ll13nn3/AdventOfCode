@@ -16,7 +16,7 @@ namespace AdventOfCode.Days
             return string.Join("", result)[..8];
         }
 
-        [SuppressMessage("Major Code Smell", "S1854", Justification = "F*** Sonar")]
+        [SuppressMessage("Major Code Smell", "S1854", Justification = "FP")]
         public override string ProcessSecond()
         {
             // Thanks https://www.reddit.com/r/adventofcode/comments/ebf5cy/2019_day_16_part_2_understanding_how_to_come_up/fb4bvw4/.

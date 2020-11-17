@@ -62,7 +62,7 @@ namespace AdventOfCode.Days
             }
         }
 
-        [SuppressMessage("Major Code Smell", "S2589", Justification = "False positive.")]
+        [SuppressMessage("Major Code Smell", "S2589", Justification = "FP")]
         private long GetCostOfFuel(long fuelNeeded)
         {
             Dictionary<string, Reaction> reactions = ParseReactions(fuelNeeded);

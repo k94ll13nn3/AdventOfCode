@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace AdventOfCode.Days
@@ -40,6 +41,7 @@ namespace AdventOfCode.Days
             return count.ToString();
         }
 
+        [SuppressMessage("Major Code Smell", "S1172", Justification = "FP")]
         public override string ProcessSecond()
         {
             var interpreter = new IntcodeInterpreter(GetContentAsLongArray(','));
