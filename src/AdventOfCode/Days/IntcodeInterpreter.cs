@@ -13,6 +13,7 @@ namespace AdventOfCode.Days
         private long[] _program;
         private long _relativeBase;
         private string _currentInstruction = string.Empty;
+        private long _cursor;
 
         public IntcodeInterpreter(long[] program)
         {
@@ -23,11 +24,20 @@ namespace AdventOfCode.Days
 
         public List<long> Outputs { get; } = new();
 
-        public string State { get; set; } = NotStarted;
-
-        public long Cursor { get; private set; }
+        public string State { get; private set; } = NotStarted;
 
         public long this[int index] => _program[index];
+
+        public IntcodeInterpreter Clone()
+        {
+            return new IntcodeInterpreter(_program)
+            {
+                _relativeBase = _relativeBase,
+                _currentInstruction = _currentInstruction,
+                _cursor = _cursor,
+                State = State,
+            };
+        }
 
         public void Run(long input)
         {
@@ -39,7 +49,7 @@ namespace AdventOfCode.Days
             Outputs.Clear();
             while (true)
             {
-                _currentInstruction = _program[Cursor].ToString().PadLeft(5, '0');
+                _currentInstruction = _program[_cursor].ToString().PadLeft(5, '0');
                 switch (_currentInstruction[^2..])
                 {
                     case "99":
@@ -48,19 +58,19 @@ namespace AdventOfCode.Days
 
                     case "01":
                         Write(GetValue(1) + GetValue(2), GetPosition(3));
-                        Cursor += 4;
+                        _cursor += 4;
                         break;
 
                     case "02":
                         Write(GetValue(1) * GetValue(2), GetPosition(3));
-                        Cursor += 4;
+                        _cursor += 4;
                         break;
 
                     case "03":
                         if (inputs?.Count > 0)
                         {
                             Write(inputs.Dequeue(), GetPosition(1));
-                            Cursor += 2;
+                            _cursor += 2;
                         }
                         else
                         {
@@ -72,30 +82,30 @@ namespace AdventOfCode.Days
 
                     case "04":
                         Outputs.Add(GetValue(1));
-                        Cursor += 2;
+                        _cursor += 2;
                         break;
 
                     case "05":
-                        Cursor = GetValue(1) != 0 ? GetValue(2) : Cursor + 3;
+                        _cursor = GetValue(1) != 0 ? GetValue(2) : _cursor + 3;
                         break;
 
                     case "06":
-                        Cursor = GetValue(1) == 0 ? GetValue(2) : Cursor + 3;
+                        _cursor = GetValue(1) == 0 ? GetValue(2) : _cursor + 3;
                         break;
 
                     case "07":
                         Write(GetValue(1) < GetValue(2) ? 1 : 0, GetPosition(3));
-                        Cursor += 4;
+                        _cursor += 4;
                         break;
 
                     case "08":
                         Write(GetValue(1) == GetValue(2) ? 1 : 0, GetPosition(3));
-                        Cursor += 4;
+                        _cursor += 4;
                         break;
 
                     case "09":
                         _relativeBase += GetValue(1);
-                        Cursor += 2;
+                        _cursor += 2;
                         break;
                 }
             }
@@ -114,9 +124,9 @@ namespace AdventOfCode.Days
         {
             return _currentInstruction[^(2 + parameterNumber)] switch
             {
-                '0' => _program[Cursor + parameterNumber],
-                '1' => Cursor + parameterNumber,
-                '2' => _program[Cursor + parameterNumber] + _relativeBase,
+                '0' => _program[_cursor + parameterNumber],
+                '1' => _cursor + parameterNumber,
+                '2' => _program[_cursor + parameterNumber] + _relativeBase,
                 _ => throw new InvalidOperationException(),
             };
         }
