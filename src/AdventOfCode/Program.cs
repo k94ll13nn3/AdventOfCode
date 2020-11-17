@@ -89,6 +89,7 @@ namespace AdventOfCode
                 "12" => new Day12(),
                 "13" => new Day13(),
                 "14" => new Day14(),
+                "15" => new Day15(),
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -103,6 +104,7 @@ namespace AdventOfCode
                 (new Day9(), "2457252183", "70634"),
                 (new Day11(), "2720", "SEE DRAWING (249)"),
                 (new Day13(), "333", "16539"),
+                (new Day15(), "224", "284"),
             };
         }
 
