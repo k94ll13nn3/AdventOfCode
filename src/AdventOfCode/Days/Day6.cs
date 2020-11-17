@@ -52,7 +52,7 @@ namespace AdventOfCode.Days
             return (you.Depth + san.Depth - (2 * chosen.Depth) - 2).ToString();
         }
 
-        [SuppressMessage("Major Code Smell", "S1854", Justification = "False positive, see https://github.com/SonarSource/sonar-dotnet/issues/3126")]
+        [SuppressMessage("Major Code Smell", "S1854", Justification = "FP")]
         private Planet GetSystem()
         {
             ILookup<string, string> lines = GetLines().ToLookup(x => x.Split(')')[0], x => x.Split(')')[1]);
