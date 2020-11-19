@@ -94,6 +94,7 @@ namespace AdventOfCode
                 "17" => new Day17(),
                 "18" => new Day18(),
                 "19" => new Day19(),
+                "20" => new Day20(),
                 _ => throw new InvalidOperationException(),
             };
         }
