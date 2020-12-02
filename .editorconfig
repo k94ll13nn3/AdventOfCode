@@ -171,4 +171,5 @@ csharp_space_between_parentheses = false
 csharp_space_between_square_brackets = false
 
 dotnet_diagnostic.CA1303.severity = none
+dotnet_diagnostic.CA1305.severity = none
 dotnet_diagnostic.RCS1197.severity = none
