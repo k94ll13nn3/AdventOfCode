@@ -21,11 +21,6 @@ namespace AdventOfCode.Days
             return _content ??= File.ReadAllText($"Inputs/Input{_dayNumber}.txt");
         }
 
-        public long[] GetContentAsLongArray(char separator)
-        {
-            return Array.ConvertAll(GetContent().Split(separator), long.Parse);
-        }
-
         public IEnumerable<string> GetLines()
         {
             return _lines ??= File.ReadAllLines($"Inputs/Input{_dayNumber}.txt");
