@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Days
 {
     public class Day19 : Day
     {
-        private static readonly Dictionary<int, List<string>> Memory = new();
+        private static readonly Dictionary<int, string> Memory = new();
         public override string Title => "Monster Messages";
 
         public override string ProcessFirst()
@@ -17,12 +18,9 @@ namespace AdventOfCode.Days
                 .ToList();
 
             var rules = input[0].Select(x => x.Split(':')).ToDictionary(x => int.Parse(x[0].Trim()), x => x[1].Trim());
-            HashSet<string> allPossibleRules = GetRule(rules, 0).ToHashSet();
+            var regex = new Regex($"^{GetRule(rules, 0)}$", RegexOptions.Compiled);
 
-            HashSet<string> inputHashSet = input[1].ToHashSet();
-            inputHashSet.IntersectWith(allPossibleRules);
-
-            return $"{inputHashSet.Count}";
+            return $"{input[1].Count(x => regex.IsMatch(x))}";
         }
 
         public override string ProcessSecond()
@@ -34,95 +32,45 @@ namespace AdventOfCode.Days
 
             var rules = input[0].Select(x => x.Split(':')).ToDictionary(x => int.Parse(x[0].Trim()), x => x[1].Trim());
 
-            if (rules[0] != "8 11")
-            {
-                throw new InvalidOperationException("cannot handle this input");
-            }
+            // New rules (no need to update the input, the code will take care of the changes):
+            // [8] = "42 | 42 8"; // Match any number of 42
+            // [11] = "42 31 | 42 11 31"; // Match x number of 42 then x number 31, same x for both.
 
-            rules[8] = "42 | 42 8";
-            rules[11] = "42 31 | 42 11 31";
+            // Create a Regex with a balancing group definition of form ^(A)+(?<G>A)+(?<-G>B)+$
+            // This will match at least one number of pattern A, then any number of pattern A stored in the group G,
+            // then will try to match any pattern B, but for each pattern B, a pattern A must have been found by the group G.
+            // So AAB will match because A is matched, the A is captured, then B can be matched because one A was captured.
+            // So AB will not match because A is matched, then B cannot be matched because no A was captured.
+            // So AABB will not match because A is matched, the A is captured, then B can be matched because one A was captured but
+            // the last B cannot be matched because only one A was captured.
+            string pattern = $"^{rules[0].Replace("8", $"({Memory[42]})+").Replace("11", $"(?<G>{Memory[42]})+(?<-G> {Memory[31]})+").Replace(" ", "")}$";
+            var regex = new Regex(pattern, RegexOptions.Compiled);
 
-            List<string> rule42 = GetRule(rules, 42);
-            List<string> rule31 = GetRule(rules, 31);
-            int count = 0;
-            foreach (string word in input[1])
-            {
-                int length = rule42[0].Length;
-                int i = 0;
-                int count42 = 0;
-                while (i + length <= word.Length && rule42.Contains(word[i..(i + length)]))
-                {
-                    i += length;
-                    count42++;
-                }
-
-                if (i < 2 * rule42[0].Length || i >= word.Length)
-                {
-                    // At least two 42 (one for 8 and one for 11) is needed and one 31 (for the end of 11).
-                    continue;
-                }
-
-                int count31 = 0;
-                length = rule31[0].Length;
-                while (i + length <= word.Length && rule31.Contains(word[i..(i + length)]))
-                {
-                    i += length;
-                    count31++;
-                }
-
-                if (i == word.Length && count31 < count42)
-                {
-                    count++;
-                }
-            }
-
-            return $"{count}";
+            return $"{input[1].Count(x => regex.IsMatch(x))}";
         }
 
-        private static List<string> GetRule(Dictionary<int, string> rules, int ruleNumber)
+        private static string GetRule(Dictionary<int, string> rules, int ruleNumber)
         {
             if (!Memory.ContainsKey(ruleNumber))
             {
                 if (rules[ruleNumber][0] == '"')
                 {
-                    Memory[ruleNumber] = new List<string> { rules[ruleNumber][1..^1] };
+                    Memory[ruleNumber] = rules[ruleNumber][1..^1];
                 }
                 else if (rules[ruleNumber].Contains('|'))
                 {
                     (string left, string right) = rules[ruleNumber].Split('|');
-                    var res = new List<string>();
-                    res.AddRange(GetAllPossiblities(left.Trim().Split(' ').Select(x => GetRule(rules, int.Parse(x))).ToArray()));
-                    res.AddRange(GetAllPossiblities(right.Trim().Split(' ').Select(x => GetRule(rules, int.Parse(x))).ToArray()));
-                    Memory[ruleNumber] = res;
+                    string leftOptions = string.Concat(left.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => GetRule(rules, int.Parse(x))));
+                    string rightOptions = string.Concat(right.Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => GetRule(rules, int.Parse(x))));
+                    Memory[ruleNumber] = $"({leftOptions}|{rightOptions})";
                 }
                 else
                 {
-                    List<string>[] parts = rules[ruleNumber].Split(' ').Select(x => GetRule(rules, int.Parse(x))).ToArray();
-
-                    Memory[ruleNumber] = GetAllPossiblities(parts);
+                    Memory[ruleNumber] = string.Concat(rules[ruleNumber].Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => GetRule(rules, int.Parse(x))));
                 }
             }
 
             return Memory[ruleNumber];
-        }
-
-        private static List<string> GetAllPossiblities(List<string>[] input)
-        {
-            if (input.Length == 1)
-            {
-                return input[0];
-            }
-
-            var res = new List<string>();
-            foreach (string firstInput in input[0])
-            {
-                foreach (string possibility in GetAllPossiblities(input[1..]))
-                {
-                    res.Add(firstInput + possibility);
-                }
-            }
-
-            return res;
         }
     }
 }
