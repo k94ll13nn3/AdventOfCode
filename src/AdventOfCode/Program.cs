@@ -29,7 +29,7 @@ string secondPart = day.ProcessSecond();
 timer.Stop();
 
 ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
-ColorWriteLine($"({timer.ElapsedMilliseconds}ms)/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
 static ConsoleColor GetColorForElapsedTime(long elapsedMilliseconds)
 {
