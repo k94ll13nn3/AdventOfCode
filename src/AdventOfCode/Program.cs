@@ -21,7 +21,7 @@ string firstPart = day.ProcessFirst();
 timer.Stop();
 
 ColorWrite($"    {firstPart} ", ConsoleColor.DarkGray);
-ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
 timer.Restart();
 
@@ -29,7 +29,7 @@ string secondPart = day.ProcessSecond();
 timer.Stop();
 
 ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
-ColorWriteLine($"({timer.ElapsedMilliseconds}ms)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+ColorWriteLine($"({timer.ElapsedMilliseconds}ms)/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
 
 static ConsoleColor GetColorForElapsedTime(long elapsedMilliseconds)
 {
@@ -60,6 +60,7 @@ static Day GetDay(string dayNumber)
     return dayNumber switch
     {
         "1" => new Day1(),
+        "2" => new Day2(),
         _ => throw new InvalidOperationException(),
     };
 }

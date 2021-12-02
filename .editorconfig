@@ -17,7 +17,7 @@ indent_size = 2
 
 [*.cs]
 # Default severity for all .NET Code Style rules
-dotnet_analyzer_diagnostic.severity = warning
+# dotnet_analyzer_diagnostic.severity = warning
 
 # New line preferences
 csharp_new_line_before_open_brace = all
