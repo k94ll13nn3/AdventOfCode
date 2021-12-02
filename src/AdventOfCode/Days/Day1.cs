@@ -31,7 +31,8 @@ public class Day1 : Day
         int count = 0;
         for (int i = 3; i < measures.Count; i++)
         {
-            if ((measures[i] + measures[i - 1] + measures[i - 2]) > (measures[i - 1] + measures[i - 2] + measures[i - 3]))
+            // A + B + C > B + C + D <=> A > D
+            if (measures[i] > measures[i - 3])
             {
                 count++;
             }
