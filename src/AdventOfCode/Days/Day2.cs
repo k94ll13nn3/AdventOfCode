@@ -6,7 +6,7 @@ public class Day2 : Day
     {
     }
 
-    public override string Title => "Sonar Sweep";
+    public override string Title => "Dive!";
 
     public override string ProcessFirst()
     {
