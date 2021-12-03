@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode;
+namespace AdventOfCode;
 
 public abstract class Day
 {
