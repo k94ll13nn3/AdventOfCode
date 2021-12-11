@@ -69,6 +69,7 @@ static Day GetDay(string dayNumber)
         "8" => new Day8(),
         "9" => new Day9(),
         "10" => new Day10(),
+        "11" => new Day11(),
         _ => throw new InvalidOperationException(),
     };
 }
