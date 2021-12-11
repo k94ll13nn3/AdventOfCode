@@ -2,41 +2,84 @@ using System.Diagnostics;
 using AdventOfCode;
 using AdventOfCode.Days;
 
-string dayNumber = $"{DateTime.Now.Day}";
-if (args?.Length >= 1)
+var days = new Dictionary<string, Day>
 {
-    dayNumber = args[0];
+    ["1"] = new Day1(),
+    ["2"] = new Day2(),
+    ["3"] = new Day3(),
+    ["4"] = new Day4(),
+    ["5"] = new Day5(),
+    ["6"] = new Day6(),
+    ["7"] = new Day7(),
+    ["8"] = new Day8(),
+    ["9"] = new Day9(),
+    ["10"] = new Day10(),
+    ["11"] = new Day11(),
+};
+
+if (args.Length > 0 && args[0] == "all")
+{
+    long totalTime = 0L;
+    foreach (Day day in days.Values)
+    {
+        (long part1, long part2) = RunDay(day);
+        totalTime += part1 + part2;
+    }
+
+    ColorWriteLine($"Total time: {totalTime}ms", ConsoleColor.DarkCyan);
+}
+else
+{
+    string dayNumber = $"{DateTime.Now.Day}";
+    if (args?.Length >= 1)
+    {
+        dayNumber = args[0];
+    }
+
+    if (days.ContainsKey(dayNumber))
+    {
+        RunDay(days[dayNumber]);
+    }
+    else
+    {
+        ColorWrite($"Day {dayNumber} not implemented", ConsoleColor.Red);
+    }
 }
 
-Day day = GetDay(dayNumber);
+static (long part1, long part2) RunDay(Day day)
+{
+    Console.WriteLine($"Day {day.Number}: {day.Title}");
+    Console.WriteLine();
 
-Console.WriteLine($"Day {dayNumber}: {day.Title}");
-Console.WriteLine();
+    var timer = new Stopwatch();
 
-var timer = new Stopwatch();
+    timer.Start();
 
-timer.Start();
+    string firstPart = day.ProcessFirst();
+    timer.Stop();
 
-string firstPart = day.ProcessFirst();
-timer.Stop();
+    ColorWrite($"    {firstPart} ", ConsoleColor.DarkGray);
+    ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+    long part1Timer = timer.ElapsedMilliseconds;
 
-ColorWrite($"    {firstPart} ", ConsoleColor.DarkGray);
-ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+    timer.Restart();
 
-timer.Restart();
+    string secondPart = day.ProcessSecond();
+    timer.Stop();
 
-string secondPart = day.ProcessSecond();
-timer.Stop();
+    ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
+    ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+    Console.WriteLine();
 
-ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
-ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+    return (part1Timer, timer.ElapsedMilliseconds);
+}
 
 static ConsoleColor GetColorForElapsedTime(long elapsedMilliseconds)
 {
     return elapsedMilliseconds switch
     {
-        < 250 => ConsoleColor.Green,
-        < 500 => ConsoleColor.Yellow,
+        < 25 => ConsoleColor.Green,
+        < 50 => ConsoleColor.Yellow,
         _ => ConsoleColor.Red,
     };
 }
@@ -53,23 +96,4 @@ static void ColorWriteLine(string text, ConsoleColor color)
     Console.ForegroundColor = color;
     Console.WriteLine(text);
     Console.ResetColor();
-}
-
-static Day GetDay(string dayNumber)
-{
-    return dayNumber switch
-    {
-        "1" => new Day1(),
-        "2" => new Day2(),
-        "3" => new Day3(),
-        "4" => new Day4(),
-        "5" => new Day5(),
-        "6" => new Day6(),
-        "7" => new Day7(),
-        "8" => new Day8(),
-        "9" => new Day9(),
-        "10" => new Day10(),
-        "11" => new Day11(),
-        _ => throw new InvalidOperationException(),
-    };
 }
