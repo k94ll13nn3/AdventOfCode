@@ -4,7 +4,7 @@ public abstract class Day
 {
     protected Day(string dayNumber)
     {
-        Content = File.ReadAllText($"Inputs/Input{dayNumber}.txt");
+        Content = File.ReadAllText($"Inputs/Input{dayNumber}.txt").Trim();
         Lines = File.ReadAllLines($"Inputs/Input{dayNumber}.txt");
         Number = dayNumber;
     }
