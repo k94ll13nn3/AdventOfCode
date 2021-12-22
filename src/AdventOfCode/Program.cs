@@ -24,6 +24,7 @@ var days = new Dictionary<string, Day>
     ["18"] = new Day18(),
     ["20"] = new Day20(),
     ["21"] = new Day21(),
+    ["22"] = new Day22(),
 };
 
 if (args.Length > 0 && args[0] == "all")
