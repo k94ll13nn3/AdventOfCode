@@ -22,9 +22,11 @@ var days = new Dictionary<string, Day>
     ["16"] = new Day16(),
     ["17"] = new Day17(),
     ["18"] = new Day18(),
+    ["19"] = new Day19(),
     ["20"] = new Day20(),
     ["21"] = new Day21(),
     ["22"] = new Day22(),
+    ["23"] = new Day23(),
 };
 
 if (args.Length > 0 && args[0] == "all")
