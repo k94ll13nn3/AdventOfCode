@@ -2,41 +2,37 @@ namespace AdventOfCode.Days;
 
 public class Day1 : Day
 {
-    private readonly List<int> _measures;
+    private readonly List<int> _elves;
 
     public Day1() : base("1")
     {
-        _measures = Lines.Select(int.Parse).ToList();
-    }
-
-    public override string Title => "Sonar Sweep";
-
-    public override string ProcessFirst()
-    {
+        _elves = new();
         int count = 0;
-        for (int i = 1; i < _measures.Count; i++)
+        foreach (string line in Lines)
         {
-            if (_measures[i] > _measures[i - 1])
+            if (string.IsNullOrWhiteSpace(line))
             {
-                count++;
+                _elves.Add(count);
+                count = 0;
+            }
+            else
+            {
+                count += int.Parse(line);
             }
         }
 
-        return $"{count}";
+        _elves.Add(count);
+    }
+
+    public override string Title => "Calorie Counting";
+
+    public override string ProcessFirst()
+    {
+        return $"{_elves.Max(e => e)}";
     }
 
     public override string ProcessSecond()
     {
-        int count = 0;
-        for (int i = 3; i < _measures.Count; i++)
-        {
-            // A + B + C > B + C + D <=> A > D
-            if (_measures[i] > _measures[i - 3])
-            {
-                count++;
-            }
-        }
-
-        return $"{count}";
+        return $"{_elves.OrderByDescending(e => e).Take(3).Sum(e => e)}";
     }
 }
