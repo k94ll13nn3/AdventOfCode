@@ -5,6 +5,7 @@ using AdventOfCode.Days;
 var days = new Dictionary<string, Day>
 {
     ["1"] = new Day1(),
+    ["2"] = new Day2(),
 };
 
 if (args.Length > 0 && args[0] == "all")
