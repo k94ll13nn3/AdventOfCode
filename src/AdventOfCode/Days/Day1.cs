@@ -6,7 +6,7 @@ public class Day1 : Day
 
     public Day1() : base("1")
     {
-        _elves = new();
+        _elves = [];
         int count = 0;
         foreach (string line in Lines)
         {

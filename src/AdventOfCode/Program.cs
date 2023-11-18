@@ -5,7 +5,6 @@ using AdventOfCode.Days;
 var days = new Dictionary<string, Day>
 {
     ["1"] = new Day1(),
-    ["2"] = new Day2(),
 };
 
 if (args.Length > 0 && args[0] == "all")
@@ -22,14 +21,14 @@ if (args.Length > 0 && args[0] == "all")
 else
 {
     string dayNumber = $"{DateTime.Now.Day}";
-    if (args?.Length >= 1)
+    if (args.Length >= 1)
     {
         dayNumber = args[0];
     }
 
     if (days.TryGetValue(dayNumber, out Day? value))
     {
-        RunDay(value);
+        _ = RunDay(value);
     }
     else
     {
