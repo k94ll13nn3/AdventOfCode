@@ -6,15 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Inputs\Input1.txt" />
     <Compile Include="Core/Types.fs" />
     <Compile Include="Core/Helper.fs" />
     <Compile Include="Core/ColoredConsole.fs" />
     <Compile Include="Days/*.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 
   <ItemGroup>
     <None Update="Inputs\*.txt">
