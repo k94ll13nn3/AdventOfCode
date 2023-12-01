@@ -13,27 +13,30 @@ let extractDigit (input: string) =
         | i when Char.IsDigit i -> charToInt i
         | _ -> getFirstDigit (op index 1) op
 
-    (getFirstDigit 0 (+)) * 10 + (getFirstDigit (input.Length - 1) (-))
-
+    getFirstDigit 0 (+) |> (*) 10 |> (+) (getFirstDigit (input.Length - 1) (-))
 
 let replaceNumbers (input: string) =
+    // 1e, 2o, ... are for cases like oneight, to replace to 1eight
+    let replacements =
+        Map
+            [ "one", "1e"
+              "two", "2o"
+              "three", "3e"
+              "four", "4"
+              "five", "5e"
+              "six", "6"
+              "seven", "7n"
+              "eight", "8t"
+              "nine", "9e" ]
+
     let replaceNumber (input: string) =
-        input
-            .Replace("one", "1e")
-            .Replace("two", "2o")
-            .Replace("three", "3e")
-            .Replace("four", "4")
-            .Replace("five", "5e")
-            .Replace("six", "6")
-            .Replace("seven", "7n")
-            .Replace("eight", "8t")
-            .Replace("nine", "9e")
+        replacements
+        |> Map.fold (fun (state: string) key value -> state.Replace(key, value)) input
 
     let rec replaceNumberInString (acc: string) (input: string) =
-        if input.Length = 0 then
-            replaceNumber acc
-        else
-            replaceNumberInString (String.Concat(replaceNumber acc, input.[0])) (input.[1..])
+        match input.Length with
+        | 0 -> replaceNumber acc
+        | _ -> replaceNumberInString (String.Concat(replaceNumber acc, input.[0])) (input.[1..])
 
     replaceNumberInString "" input
 
