@@ -1,27 +1,54 @@
 module Day1
 
 open Helper
+open System
 
 let number = 1
 
-let title = "Calorie Counting"
+let title = "Trebuchet?!"
 
-[<TailCall>]
-let compute (input: string list) =
-    let rec computeRec (currentAcc: int) (listAcc: int list) (remainingInput: string list) =
-        match remainingInput with
-        | [] -> listAcc
-        | h :: t ->
-            match h with
-            | null
-            | "" -> computeRec 0 (currentAcc :: listAcc) t
-            | _ -> computeRec (currentAcc + (int h)) listAcc t
+let extractDigit (input: string) =
+    let rec getFirstDigit (index: int) (op) =
+        match input[index] with
+        | i when Char.IsDigit i -> charToInt i
+        | _ -> getFirstDigit (op index 1) op
 
-    computeRec 0 [] input
+    (getFirstDigit 0 (+)) * 10 + (getFirstDigit (input.Length - 1) (-))
 
-let elves = readLines "Input1.txt" |> compute
+let replaceNumber (input: string) =
+    input
+        .Replace("one", "1")
+        .Replace("two", "2")
+        .Replace("three", "3")
+        .Replace("four", "4")
+        .Replace("five", "5")
+        .Replace("six", "6")
+        .Replace("seven", "7")
+        .Replace("eight", "8")
+        .Replace("nine", "9")
 
-let computeFirst () = elves |> List.max
+let rec replaceNumberInString (acc: string) (input: string) : string =
+    if input.Length = 0 then
+        replaceNumber acc
+    elif
+        acc.Contains("one")
+        || acc.Contains("two")
+        || acc.Contains("three")
+        || acc.Contains("four")
+        || acc.Contains("five")
+        || acc.Contains("six")
+        || acc.Contains("seven")
+        || acc.Contains("eight")
+        || acc.Contains("nine")
+    then
+        replaceNumberInString (String.Concat(replaceNumber acc, input.[0])) (input.[1..])
+    else
+        replaceNumberInString (String.Concat(acc, input.[0])) (input.[1..])
+
+let computeFirst () =
+    readLinesSeq "Input1.txt" |> Seq.map extractDigit |> Seq.sum
 
 let computeSecond () =
-    elves |> List.sortByDescending id |> List.take 3 |> List.sum
+    readLinesSeq "Input1.txt"
+    |> Seq.map (replaceNumberInString "" >> extractDigit)
+    |> Seq.sum
