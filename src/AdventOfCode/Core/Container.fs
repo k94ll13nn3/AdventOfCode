@@ -1,4 +1,4 @@
-module Types
+module Container
 
 type Container<'a> =
     | Queue of 'a list * 'a list

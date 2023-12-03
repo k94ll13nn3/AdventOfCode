@@ -8,7 +8,7 @@ let readLinesSeq filePath =
     filePath |> (+/) @"Inputs\" |> File.ReadLines
 
 let readLines filePath =
-    filePath |> (+/) @"Inputs\" |> File.ReadAllLines |> Array.toList
+    filePath |> (+/) @"Inputs\" |> File.ReadAllLines
 
 let readInput filePath =
     filePath |> (+/) @"Inputs\" |> File.ReadAllText
