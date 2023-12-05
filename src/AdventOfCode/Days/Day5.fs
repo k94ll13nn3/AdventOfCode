@@ -1,5 +1,6 @@
 module Day5
 
+open System
 open Helper
 
 let number = 5
@@ -9,7 +10,7 @@ let title = "If You Give A Seed A Fertilizer"
 let lines = readLines "Input5.txt"
 
 let getRanges (input: _[]) =
-    let rec getRangesRec index (rangesAcc: (int64 * int64 * int64) list list) =
+    let rec getRangesRec index (rangesAcc: (uint64 * uint64 * uint64) list list) =
         match index with
         | _ when index = input.Length -> rangesAcc |> List.rev |> List.tail // tail to remove extra [] from file line end
         | _ ->
@@ -22,35 +23,36 @@ let getRanges (input: _[]) =
                     getRangesRec (index + 1) rangesAcc
                 else
                     let h :: t = rangesAcc
-                    let newRange = (int64 parts.[0], int64 parts.[1], int64 parts.[2])
-                    getRangesRec (index + 1) ((h @ [ newRange ]) :: t)
+                    let newRange = (uint64 parts.[0], uint64 parts.[1], uint64 parts.[2])
+                    getRangesRec (index + 1) ((newRange :: h) :: t)
 
     getRangesRec 0 [ [] ]
 
-let rec applyRange (range: (int64 * int64 * int64) list) (i: int64) =
-    match range with
-    | [] -> i
-    | (dest, src, len) :: t ->
-        if i >= src && i <= (src + len) then
-            dest + (i - src)
-        else
-            applyRange t i
+let applyRanges seed ranges =
+    let rec applyRangeRec i range =
+        match range with
+        | [] -> i
+        | (dest, src, len) :: _ when i >= src && i < (src + len) -> dest + (i - src)
+        | _ :: t -> applyRangeRec i t
+
+    List.fold applyRangeRec seed ranges
+
+let applyRangesToSeedRange ranges seed =
+    Array.init (int (snd seed)) (fun v -> (uint64 v) + (fst seed))
+    |> Array.fold (fun acc seed -> ranges |> applyRanges seed |> min acc) UInt64.MaxValue
 
 let computeFirst () =
-    let seed = lines.[0].[6..] |> splitA [| ' ' |] |> Array.map int64
     let ranges = getRanges lines.[1..]
 
-    ranges
-    |> List.fold (fun acc range -> acc |> Array.map (applyRange range)) seed
+    lines.[0].[6..]
+    |> splitC ' '
+    |> Array.map (uint64 >> (fun i -> (i, 1UL)) >> applyRangesToSeedRange ranges)
     |> Array.min
 
 let computeSecond () =
-    let seed = lines.[0].[6..] |> splitA [| ' ' |] |> Array.map int64
-    let seed1 = Array.init (int seed.[1]) (fun i -> (int64 i) + seed.[0])
-    let seed2 = Array.init (int seed.[3]) (fun i -> (int64 i) + seed.[2])
-    let seeds = Array.concat [ seed1; seed2 ]
+    let seeds = lines.[0].[6..] |> splitC ' ' |> Array.map uint64
     let ranges = getRanges lines.[1..]
 
-    ranges
-    |> List.fold (fun acc range -> acc |> Array.map (applyRange range)) seeds
+    Array.init (seeds.Length / 2) (fun i -> (seeds.[i * 2], seeds.[(i * 2) + 1]))
+    |> Array.map (applyRangesToSeedRange ranges)
     |> Array.min
