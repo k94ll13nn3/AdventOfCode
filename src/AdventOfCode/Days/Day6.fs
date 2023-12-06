@@ -8,18 +8,13 @@ let title = "Wait For It"
 
 let lines = readLines "Input6.txt"
 
-let inline countWinningWays time distance =
-    let lower =
-        seq { for i in 1L .. time -> i }
-        |> Seq.takeWhile (fun t -> t * time - t * t <= distance)
-        |> Seq.length
+let inline countWinningWays (time: int64) distance =
+    // -t2 + t*time - distance = 0
+    let detla = (time * time - (4L * (-distance) * -1L)) |> float |> sqrt
+    let lower = ((float -time) + detla) / (2.0 * -1.0) |> floor |> int64
+    let higher = ((float -time) - detla) / (2.0 * -1.0) |> floor |> int64
 
-    let higher =
-        seq { for i in time .. -1L .. 1L -> i }
-        |> Seq.takeWhile (fun t -> t * time - t * t <= distance)
-        |> Seq.length
-
-    time - (higher + lower |> int64)
+    higher - lower
 
 let computeFirst () =
     let times = lines.[0] |> splitA [| ':'; ' ' |] |> Array.tail |> Array.map int64
