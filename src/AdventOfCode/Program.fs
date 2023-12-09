@@ -1,4 +1,4 @@
-﻿open Day7
+﻿open Day8
 open System.Diagnostics
 open ColoredConsole
 
