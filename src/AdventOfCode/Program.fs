@@ -1,6 +1,7 @@
 ﻿open Day10
 open System.Diagnostics
 open ColoredConsole
+open Humanizer
 
 printfn $"Day {number}: {title}"
 printfn ""
@@ -12,7 +13,7 @@ timer.Stop()
 printColoredText $"    {firstPart} " darkGrayColor
 
 printColoredText
-    $"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)"
+    $"({timer.ElapsedMilliseconds.Milliseconds()}ms/{timer.ElapsedTicks} ticks)"
     (timer.ElapsedMilliseconds |> getColorForElapsedTime)
 
 printfn ""
@@ -24,7 +25,7 @@ timer.Stop()
 printColoredText $"    {secondPart} " darkGrayColor
 
 printColoredText
-    $"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)"
+    $"({timer.ElapsedMilliseconds.Milliseconds()}ms/{timer.ElapsedTicks} ticks)"
     (timer.ElapsedMilliseconds |> getColorForElapsedTime)
 
 printfn ""

@@ -2,6 +2,7 @@ module Day10
 
 open Container
 open Helper
+open System
 
 let number = 10
 
@@ -17,7 +18,7 @@ type Direction =
 
 let rec findFarthest (container: Container<((int * int) * int)>) acc lastV =
     match isEmpty container with
-    | true -> lastV
+    | true -> (lastV, acc)
     | false ->
         let (((x, y), v), cont) = take container
 
@@ -56,5 +57,33 @@ let computeFirst () =
     let startPositionY = lines.[startPositionX].IndexOf 'S'
 
     findFarthest (findStartingPoints startPositionX startPositionY ==> emptyQueue) [] 0
+    |> fst
 
-let computeSecond () = 0
+let computeSecond () =
+    let startPositionX = lines |> Array.findIndex (fun s -> s.Contains "S")
+    let startPositionY = lines.[startPositionX].IndexOf 'S'
+
+    let pointsInLoop =
+        findFarthest (findStartingPoints startPositionX startPositionY ==> emptyQueue) [] 0
+        |> snd
+
+    let mutable count = 0
+
+    for i in 1 .. lines.Length - 1 do // 1 to length - 1 because the outside cannot be in the loop
+        for j in 1 .. lines.[0].Length - 1 do
+            if pointsInLoop |> List.contains (i, j) |> not then
+                let leftCount =
+                    seq { for jj in 0 .. j - 1 -> jj }
+                    // - has no impact on the point being inside or outside
+                    |> Seq.filter (fun e -> lines.[i].[e] <> '-' && List.contains (i, e) pointsInLoop)
+                    |> Seq.map (fun e -> lines.[i].[e])
+                    |> String.Concat
+                    |> (fun s -> s.Replace("F7", "")) // F7 and LF are not creating a new area
+                    |> (fun s -> s.Replace("LJ", ""))
+                    |> (fun s -> s.Replace("FJ", "|")) // FJ and L7 are like a | with more steps
+                    |> (fun s -> s.Replace("L7", "|"))
+
+                if leftCount.Length <> 0 && leftCount.Length % 2 = 1 then
+                    count <- count + 1
+
+    count
