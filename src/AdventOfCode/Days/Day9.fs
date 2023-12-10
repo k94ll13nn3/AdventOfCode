@@ -9,28 +9,21 @@ let title = "Mirage Maintenance"
 let lines = readLines "Input9.txt" |> Array.map (splitC ' ' >> (Array.map int))
 
 let extrapolate (values: int[]) =
-    let rec extrapolateRec current acc =
+    let rec extrapolateRec accStart accBack i current =
         match current |> Array.exists ((<>) 0) with
-        | false -> acc
+        | false -> (accStart, accBack)
         | true ->
-            let newValues = current.[1..] |> Array.mapi (fun i v -> v - current.[i])
-            extrapolateRec newValues (acc + current.[^0])
-
-    extrapolateRec values 0
-
-let extrapolateStart (values: int[]) =
-    let rec extrapolateRec current acc i =
-        match current |> Array.exists ((<>) 0) with
-        | false -> acc
-        | true ->
-            let newValues = current.[1..] |> Array.mapi (fun i v -> v - current.[i])
             let op = if i % 2 = 0 then (+) else (-)
-            extrapolateRec newValues (op acc current.[0]) (i + 1)
 
-    extrapolateRec values 0 0
+            current
+            |> Array.pairwise
+            |> Array.map (fun (i, j) -> j - i)
+            |> extrapolateRec (op accStart current.[0]) (accBack + current.[^0]) (i + 1)
+
+    extrapolateRec 0 0 0 values
 
 let computeFirst () =
-    lines |> Array.map extrapolate |> Array.sum
+    lines |> Array.map extrapolate |> Array.sumBy snd
 
 let computeSecond () =
-    lines |> Array.map extrapolateStart |> Array.sum
+    lines |> Array.map extrapolate |> Array.sumBy fst
