@@ -25,3 +25,9 @@ let inline splitA (c: char array) (s: string) =
 let inline rotate (a: string[]) =
     [| for x in { 0 .. a.[0].Length - 1 } -> [| for y in { 0 .. a.Length - 1 } -> a.[y].[x] |] |]
     |> Array.map String
+
+module Array =
+    let copySet i v (arr: 'a[]) =
+        let n = Array.copy arr
+        n.[i] <- v
+        n

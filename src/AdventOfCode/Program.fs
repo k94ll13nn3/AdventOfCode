@@ -1,4 +1,4 @@
-﻿open Day11
+﻿open Day12
 open System.Diagnostics
 open ColoredConsole
 open Humanizer
