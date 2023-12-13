@@ -26,8 +26,16 @@ let inline rotate (a: string[]) =
     [| for x in { 0 .. a.[0].Length - 1 } -> [| for y in { 0 .. a.Length - 1 } -> a.[y].[x] |] |]
     |> Array.map String
 
+let inline rotateA (a: 'a[][]) =
+    [| for x in { 0 .. a.[0].Length - 1 } -> [| for y in { 0 .. a.Length - 1 } -> a.[y].[x] |] |]
+
 module Array =
     let copySet i v (arr: 'a[]) =
         let n = Array.copy arr
         n.[i] <- v
+        n
+
+    let copySet2 i j v (arr: 'a[][]) =
+        let n = Array.copy (arr |> Array.map Array.copy)
+        n.[i].[j] <- v
         n
