@@ -44,6 +44,11 @@ let peek q =
         let bs = List.rev fs
         Some bs.Head
 
+let length q =
+    match q with
+    | Queue(fs, bs) -> List.length (fs @ bs)
+    | Stack(l) -> List.length l
+
 let countBy projection q =
     match q with
     | Queue(fs, bs) -> List.countBy projection (fs @ bs)
