@@ -1,8 +1,8 @@
 {
   "profiles": {
     "AdventOfCode": {
-        "commandName": "Project",
-        "workingDirectory": "$(MSBuildProjectDirectory)"
+      "commandName": "Project",
+      "commandLineArgs": "1"
     }
   }
 }

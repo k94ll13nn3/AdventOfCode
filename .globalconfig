@@ -1,0 +1,16 @@
+is_global = true
+
+dotnet_diagnostic.CA1014.severity = none
+dotnet_diagnostic.CA1305.severity = none
+
+# See https://github.com/dotnet/roslyn/issues/47832
+dotnet_diagnostic.IDE0058.severity = none
+
+dotnet_diagnostic.RCS1197.severity = none
+
+dotnet_diagnostic.IDE0270.severity = refactoring
+
+roslynator_accessibility_modifiers = explicit
+roslynator_enum_has_flag_style = method
+roslynator_object_creation_type_style = implicit_when_type_is_obvious
+roslynator_use_var_instead_of_implicit_object_creation = true
