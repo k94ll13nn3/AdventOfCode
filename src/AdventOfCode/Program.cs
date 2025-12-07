@@ -10,6 +10,7 @@ var days = new Dictionary<string, Day>
     ["4"] = new Day4(),
     ["5"] = new Day5(),
     ["6"] = new Day6(),
+    ["7"] = new Day7(),
 };
 
 if (args.Length > 0 && args[0] == "all")
