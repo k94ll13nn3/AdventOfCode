@@ -2,7 +2,7 @@ namespace AdventOfCode.Days;
 
 internal sealed class Day7() : Day("7")
 {
-    public override string Title => "Trash Compactor";
+    public override string Title => "Laboratories";
 
     public override string ProcessFirst()
     {

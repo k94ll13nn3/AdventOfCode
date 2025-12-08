@@ -11,6 +11,7 @@ var days = new Dictionary<string, Day>
     ["5"] = new Day5(),
     ["6"] = new Day6(),
     ["7"] = new Day7(),
+    ["8"] = new Day8(),
 };
 
 if (args.Length > 0 && args[0] == "all")
@@ -18,8 +19,8 @@ if (args.Length > 0 && args[0] == "all")
     long totalTime = 0L;
     foreach (Day day in days.Values)
     {
-        (long part1, long part2) = RunDay(day);
-        totalTime += part1 + part2;
+        (double part1, double part2) = RunDay(day);
+        totalTime += (long)(part1 + part2);
     }
 
     ColorWriteLine($"Total time: {totalTime}ms", ConsoleColor.DarkCyan);
@@ -42,7 +43,7 @@ else
     }
 }
 
-static (long part1, long part2) RunDay(Day day)
+static (double part1, double part2) RunDay(Day day)
 {
     Console.WriteLine($"Day {day.Number}: {day.Title}");
     Console.WriteLine();
@@ -55,8 +56,8 @@ static (long part1, long part2) RunDay(Day day)
     timer.Stop();
 
     ColorWrite($"    {firstPart} ", ConsoleColor.DarkGray);
-    ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
-    long part1Timer = timer.ElapsedMilliseconds;
+    ColorWriteLine($"({(long)timer.Elapsed.TotalMilliseconds}ms/{timer.Elapsed.TotalMicroseconds}µs)", GetColorForElapsedTime(timer.Elapsed.TotalMilliseconds));
+    double part1Timer = timer.Elapsed.TotalMilliseconds;
 
     timer.Restart();
 
@@ -64,15 +65,15 @@ static (long part1, long part2) RunDay(Day day)
     timer.Stop();
 
     ColorWrite($"    {secondPart} ", ConsoleColor.DarkGray);
-    ColorWriteLine($"({timer.ElapsedMilliseconds}ms/{timer.ElapsedTicks} ticks)", GetColorForElapsedTime(timer.ElapsedMilliseconds));
+    ColorWriteLine($"({(long)timer.Elapsed.TotalMilliseconds}ms/{timer.Elapsed.TotalMicroseconds}µs)", GetColorForElapsedTime(timer.Elapsed.TotalMilliseconds));
     Console.WriteLine();
 
-    return (part1Timer, timer.ElapsedMilliseconds);
+    return (part1Timer, timer.Elapsed.TotalMilliseconds);
 }
 
-static ConsoleColor GetColorForElapsedTime(long elapsedMilliseconds)
+static ConsoleColor GetColorForElapsedTime(double totalMilliseconds)
 {
-    return elapsedMilliseconds switch
+    return totalMilliseconds switch
     {
         < 25 => ConsoleColor.Green,
         < 50 => ConsoleColor.Yellow,
