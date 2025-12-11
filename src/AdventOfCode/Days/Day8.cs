@@ -12,9 +12,18 @@ internal sealed class Day8() : Day("8")
         foreach (((int x, int y, int z) left, (int x, int y, int z) right, _) in distances.Skip(1))
         {
             int i = circuits.FindIndex(c => c.Contains(left) || c.Contains(right));
-            if (i >= 0)
+            int ij = circuits.FindIndex(i + 1, c => c.Contains(left) || c.Contains(right));
+            if (i >= 0 && ij >= 0)
             {
                 circuits[i].AddRange([left, right]);
+                circuits[i].AddRange(circuits[ij]);
+                circuits.RemoveAt(ij);
+                circuits[i] = [.. circuits[i].Distinct()];
+            }
+            else if (i >= 0)
+            {
+                circuits[i].AddRange([left, right]);
+                circuits[i] = [.. circuits[i].Distinct()];
             }
             else
             {
@@ -22,19 +31,7 @@ internal sealed class Day8() : Day("8")
             }
         }
 
-
-        for (int i = circuits.Count - 1; i >= 1; i--)
-        {
-            int ij = circuits[..i].FindIndex(c => c.Any(l => circuits[i].Contains(l)));
-            if (ij >= 0)
-            {
-                circuits[ij].AddRange(circuits[i]);
-                circuits.RemoveAt(i);
-            }
-
-        }
-
-        circuits = [.. circuits.Select(c => c.Distinct().ToList()).OrderByDescending(c => c.Distinct().Count())];
+        circuits = [.. circuits.OrderByDescending(c => c.Count)];
 
         return $"{circuits.Take(3).Aggregate(1, (acc, e) => acc * e.Count)}";
     }
@@ -47,28 +44,25 @@ internal sealed class Day8() : Day("8")
         foreach (((int x, int y, int z) left, (int x, int y, int z) right, _) in distances.Skip(1))
         {
             int i = circuits.FindIndex(c => c.Contains(left) || c.Contains(right));
-            if (i >= 0)
+            int ij = circuits.FindIndex(i + 1, c => c.Contains(left) || c.Contains(right));
+            if (i >= 0 && ij >= 0)
             {
                 circuits[i].AddRange([left, right]);
+                circuits[i].AddRange(circuits[ij]);
+                circuits.RemoveAt(ij);
+                circuits[i] = [.. circuits[i].Distinct()];
+            }
+            else if (i >= 0)
+            {
+                circuits[i].AddRange([left, right]);
+                circuits[i] = [.. circuits[i].Distinct()];
             }
             else
             {
                 circuits.Add([left, right]);
             }
 
-
-            for (int i2 = circuits.Count - 1; i2 >= 1; i2--)
-            {
-                int ij = circuits[..i2].FindIndex(c => c.Any(l => circuits[i2].Contains(l)));
-                if (ij >= 0)
-                {
-                    circuits[ij].AddRange(circuits[i2]);
-                    circuits.RemoveAt(i2);
-                }
-
-            }
-
-            if (circuits.Count == 1 && circuits[0].Distinct().Count() == boxes.Count)
+            if (circuits.Count == 1 && circuits[0].Count == boxes.Count)
             {
                 return $"{left.x * right.x}";
             }
